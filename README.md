@@ -343,8 +343,8 @@ r.recycle_yields()     # derived 25% returns: iron-plate 0.25, copper-cable 0.75
 ```
 
 `get()` raises a helpful `KeyError` with close-match suggestions for typos, and explains *why* a
-recipe is unavailable if it was deliberately skipped (e.g. a fluid ingredient that recycling can't
-recover). `db.skipped` holds those reasons.
+recipe is unavailable if it was deliberately skipped (e.g. a recipe with only fluid ingredients,
+which can't form a recycle loop). `db.skipped` holds those reasons.
 
 To load config files programmatically, `quality_loop.config.load_factory_config(path)` returns a
 `FactoryConfig` (recipe, machine, output_mode, belt_cap, target_ingredient).
@@ -408,8 +408,12 @@ separately in the config (they encode quality, speed modules, and beacons).
 ## Recipe database
 
 The bundled [`data/recipes.json`](data/recipes.json) is generated from a Factorio `data.raw` dump.
-Recipes with fluid ingredients (not recoverable by recycling) and multi-output recipes without a
-clear primary product are skipped, with the reason recorded under `_skipped`.
+**Fluid ingredients are kept**, but treated as external (piped) inputs: recyclers never return
+fluids, so a fluid doesn't ride the shared belt, isn't recycled, and doesn't count toward the
+belt-scaling ingredient total — it's just consumed per craft and reported as a separate input rate
+(e.g. the sulfuric-acid in `processing-unit`). Only recipes with *no* recyclable (item) ingredient,
+and multi-output recipes without a clear primary product, are skipped, with the reason recorded
+under `_skipped`.
 
 To regenerate it from a new dump (e.g. for a different game version or mod set), use the offline
 converter — it is a standalone script the runtime never imports:

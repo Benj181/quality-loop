@@ -217,9 +217,11 @@ def convert(text: str) -> dict:
         if not ingredients:
             skipped[name] = "no ingredients (raw resource / mining)"
             continue
-        fluids = [i["name"] for i in ingredients if i["type"] == "fluid"]
-        if fluids:
-            skipped[name] = f"fluid ingredient(s) not recoverable by recycling: {fluids}"
+        # Fluid ingredients are kept but flagged: recycling never returns them,
+        # so they are external (piped) inputs, not part of the recycle loop. A
+        # recipe needs at least one item (solid) ingredient to form a loop at all.
+        if not any(i["type"] == "item" for i in ingredients):
+            skipped[name] = "no recyclable (item) ingredients to loop"
             continue
         results = _norm_items(r.get("results"))
         primary, reason = _primary_result(results, name)

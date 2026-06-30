@@ -25,6 +25,15 @@ SINGLE = RecipeSpec(
     ingredients=(Ingredient("widget", 1.0),),
     craft_time=0.5, output_yield=1.0, name="widget", output_item="widget",
 )
+# processing-unit: solids + a fluid that recycling can't recover.
+FLUID = RecipeSpec(
+    ingredients=(
+        Ingredient("electronic-circuit", 20.0),
+        Ingredient("advanced-circuit", 2.0),
+        Ingredient("sulfuric-acid", 5.0, "fluid"),
+    ),
+    craft_time=10.0, output_yield=1.0, name="processing-unit", output_item="processing-unit",
+)
 
 
 def _machine(**kw):
@@ -153,3 +162,23 @@ def test_raw_input_rates_per_ingredient():
     rates = dict(plan.raw_input_rates)
     assert rates["copper-cable"] == pytest.approx(3.0 * plan.input_rate)
     assert rates["iron-plate"] == pytest.approx(1.0 * plan.input_rate)
+
+
+def test_fluid_ingredient_is_external_not_looped():
+    """A fluid ingredient is reported as a piped input, kept off the belt and out
+    of the loop: it doesn't count toward N, and tie-back still holds."""
+    plan = plan_factory(FLUID, _machine(productivity_research=100.0), SystemOutput.ITEMS)
+    # N (belt scaling) uses only the 20 + 2 solid counts, not the 5 sulfuric-acid.
+    assert plan.total_ingredients == 22.0
+    solids = dict(plan.raw_input_rates)
+    fluids = dict(plan.fluid_input_rates)
+    assert set(solids) == {"electronic-circuit", "advanced-circuit"}
+    assert set(fluids) == {"sulfuric-acid"}
+    assert fluids["sulfuric-acid"] == pytest.approx(5.0 * plan.input_rate)
+    # The loop math is unaffected by the fluid: tie-back still exact.
+    assert plan.target_output_rate / plan.input_rate == pytest.approx(plan.efficiency_pct / 100.0, abs=1e-9)
+
+
+def test_cannot_extract_a_fluid():
+    with pytest.raises(ValueError, match="cannot extract fluid"):
+        plan_factory(FLUID, _machine(), SystemOutput.INGREDIENTS, target_ingredient="sulfuric-acid")

@@ -17,8 +17,21 @@ DATA = {
         "output_item": "electronic-circuit",
         "output_yield": 1.0,
     },
+    "processing-unit": {
+        "name": "processing-unit",
+        "category": "electronics-with-fluid",
+        "energy_required": 10.0,
+        "ingredients": [
+            {"name": "electronic-circuit", "amount": 20, "type": "item"},
+            {"name": "advanced-circuit", "amount": 2, "type": "item"},
+            {"name": "sulfuric-acid", "amount": 5, "type": "fluid"},
+        ],
+        "results": [{"name": "processing-unit", "amount": 1, "type": "item"}],
+        "output_item": "processing-unit",
+        "output_yield": 1.0,
+    },
     "_skipped": {
-        "sulfur": "fluid ingredient(s) not recoverable by recycling: ['water']",
+        "sulfur": "no recyclable (item) ingredients to loop",
     },
 }
 
@@ -42,6 +55,16 @@ def test_derived_recycling(db):
     yields = {y.name: y.count for y in ec.recycle_yields()}
     assert yields == {"iron-plate": 0.25, "copper-cable": 0.75}  # 25% of counts
     assert ec.recycle_time() == pytest.approx(0.5 * RECYCLE_TIME_FACTOR)
+
+
+def test_fluid_ingredients_kept_but_excluded_from_loop(db):
+    pu = db.get("processing-unit")
+    assert {i.name for i in pu.solid_ingredients} == {"electronic-circuit", "advanced-circuit"}
+    assert [i.name for i in pu.fluid_ingredients] == ["sulfuric-acid"]
+    # N (belt scaling) counts solids only: 20 + 2, not the 5 sulfuric-acid.
+    assert pu.total_ingredients == 22.0
+    # recycling never returns the fluid.
+    assert "sulfuric-acid" not in {y.name for y in pu.recycle_yields()}
 
 
 def test_lookup_errors(db):

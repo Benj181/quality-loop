@@ -19,9 +19,18 @@ _DB = RecipeDB(
             ingredients=(Ingredient("iron-plate", 1.0), Ingredient("copper-cable", 3.0)),
             craft_time=0.5, output_yield=1.0, output_item="electronic-circuit",
             category="electronics",
-        )
+        ),
+        "processing-unit": Recipe(
+            name="processing-unit",
+            ingredients=(
+                Ingredient("electronic-circuit", 20.0),
+                Ingredient("sulfuric-acid", 5.0, "fluid"),
+            ),
+            craft_time=10.0, output_yield=1.0, output_item="processing-unit",
+            category="electronics-with-fluid",
+        ),
     },
-    skipped={"sulfur": "fluid ingredient(s) not recoverable by recycling: ['water']"},
+    skipped={"sulfur": "no recyclable (item) ingredients to loop"},
 )
 
 MINIMAL = {
@@ -74,6 +83,10 @@ def test_target_ingredient_rules():
     # not allowed in item mode
     with pytest.raises(ValueError, match="only valid when output_mode"):
         parse({**MINIMAL, "target_ingredient": "copper-cable"})
+    # cannot target a fluid
+    with pytest.raises(ValueError, match="cannot extract fluid"):
+        parse({"recipe": "processing-unit", "machine": MINIMAL["machine"],
+               "output_mode": "ingredients", "target_ingredient": "sulfuric-acid"})
 
 
 def test_unknown_recipe_and_keys():

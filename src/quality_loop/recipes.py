@@ -29,6 +29,11 @@ _DEFAULT_DB_PATH = os.path.join(
 class Ingredient:
     name: str
     count: float
+    type: str = "item"  # "item" (recyclable/looped) or "fluid" (external, piped)
+
+    @property
+    def is_fluid(self) -> bool:
+        return self.type == "fluid"
 
 
 @dataclass(frozen=True)
@@ -47,13 +52,25 @@ class Recipe:
         return self.output_yield
 
     @property
+    def solid_ingredients(self) -> tuple[Ingredient, ...]:
+        """Item (recyclable) ingredients -- the ones that ride the loop/belt."""
+        return tuple(i for i in self.ingredients if not i.is_fluid)
+
+    @property
+    def fluid_ingredients(self) -> tuple[Ingredient, ...]:
+        """Fluid ingredients -- external (piped) inputs, never recycled."""
+        return tuple(i for i in self.ingredients if i.is_fluid)
+
+    @property
     def total_ingredients(self) -> float:
-        """Sum of per-craft ingredient counts (mixed-belt scaling factor N)."""
-        return sum(i.count for i in self.ingredients)
+        """Sum of per-craft SOLID ingredient counts (mixed-belt scaling factor N).
+        Fluids are excluded: recyclers do not return them, so they never ride the
+        shared belt."""
+        return sum(i.count for i in self.solid_ingredients)
 
     def recycle_yields(self) -> tuple[Ingredient, ...]:
-        """Derived recycler output per recycled item (25% of ingredients)."""
-        return tuple(Ingredient(i.name, i.count * RECYCLE_RETURN) for i in self.ingredients)
+        """Derived recycler output per recycled item (25% of solid ingredients)."""
+        return tuple(Ingredient(i.name, i.count * RECYCLE_RETURN) for i in self.solid_ingredients)
 
     def recycle_time(self, factor: float = RECYCLE_TIME_FACTOR) -> float:
         return self.craft_time * factor
@@ -74,7 +91,8 @@ class RecipeDB:
             recipes[name] = Recipe(
                 name=r["name"],
                 ingredients=tuple(
-                    Ingredient(i["name"], float(i["amount"])) for i in r["ingredients"]
+                    Ingredient(i["name"], float(i["amount"]), i.get("type", "item"))
+                    for i in r["ingredients"]
                 ),
                 craft_time=float(r["energy_required"]),
                 output_yield=float(r["output_yield"]),

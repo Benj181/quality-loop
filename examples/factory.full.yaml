@@ -10,7 +10,7 @@
 # ============================================================================
 
 # The recipe. Either a NAME looked up in the recipe database (preferred)...
-recipe: electronic-circuit
+recipe: processing-unit
 #
 # ...or an inline mapping (no DB needed):
 # recipe:
@@ -62,7 +62,7 @@ machine:
   # productivity inside the engine (engine clamps the total at +300%). This
   # affects yields only; it never multiplies the speed-based craft rate.
   # Default: 0.0
-  productivity_research: 0
+  productivity_research: 300
 
   # Recycle time as a fraction of craft_time. Factorio default is 1/16.
   # Default: 0.0625

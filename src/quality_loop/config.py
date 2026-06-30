@@ -124,9 +124,10 @@ def parse_factory_config(data, db: RecipeDB | None = None) -> FactoryConfig:
         if target_ingredient is None:
             raise ValueError(
                 "ingredient extraction requires 'target_ingredient' (one of "
-                f"{[i.name for i in recipe.ingredients]})"
+                f"{[i.name for i in recipe.solid_ingredients]})"
             )
-        recipe.ingredient(target_ingredient)  # validates membership, raises if absent
+        if recipe.ingredient(target_ingredient).is_fluid:  # also validates membership
+            raise ValueError(f"cannot extract fluid {target_ingredient!r}: fluids are not recycled")
     elif target_ingredient is not None:
         raise ValueError("'target_ingredient' is only valid when output_mode is 'ingredients'")
 

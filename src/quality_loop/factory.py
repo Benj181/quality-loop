@@ -82,8 +82,21 @@ class RecipeSpec:
         return self.output_yield
 
     @property
+    def solid_ingredients(self) -> tuple[Ingredient, ...]:
+        """Item (recyclable) ingredients -- the ones that ride the loop/belt."""
+        return tuple(i for i in self.ingredients if not i.is_fluid)
+
+    @property
+    def fluid_ingredients(self) -> tuple[Ingredient, ...]:
+        """Fluid ingredients -- external (piped) inputs, never recycled."""
+        return tuple(i for i in self.ingredients if i.is_fluid)
+
+    @property
     def total_ingredients(self) -> float:
-        return sum(i.count for i in self.ingredients)
+        """Sum of per-craft SOLID ingredient counts (mixed-belt scaling factor N).
+        Fluids are excluded: recyclers never return them, so they never ride the
+        shared belt."""
+        return sum(i.count for i in self.solid_ingredients)
 
     def ingredient(self, name: str) -> Ingredient:
         for i in self.ingredients:
@@ -133,8 +146,9 @@ class FactoryPlan:
     efficiency_pct: float
     module_configs: Sequence[ModuleConfig]
     input_rate: float                    # raw input-sets/sec (lambda)
-    raw_input_rates: Sequence[tuple[str, float]]  # per ingredient, units/sec
-    total_ingredients: float             # N (per-craft ingredient count sum)
+    raw_input_rates: Sequence[tuple[str, float]]    # solid ingredients, units/sec
+    fluid_input_rates: Sequence[tuple[str, float]]  # fluid (piped) inputs, units/sec
+    total_ingredients: float             # N (per-craft SOLID ingredient count sum)
     target_name: str                     # what is extracted
     target_ingredient: str | None        # ingredient mode only
     target_output_rate: float            # extracted target/sec
@@ -177,9 +191,15 @@ def plan_factory(
         if target_ingredient is None:
             raise ValueError(
                 "ingredient extraction requires target_ingredient (one of "
-                f"{[i.name for i in recipe.ingredients]})."
+                f"{[i.name for i in recipe.solid_ingredients]})."
             )
-        n_target = recipe.ingredient(target_ingredient).count
+        target = recipe.ingredient(target_ingredient)
+        if target.is_fluid:
+            raise ValueError(
+                f"cannot extract fluid {target_ingredient!r}: fluids have no quality "
+                "and are not recycled."
+            )
+        n_target = target.count
         target_name = target_ingredient
 
     # 1. Optimal per-tier modules (intensive: independent of counts and belt).
@@ -252,8 +272,9 @@ def plan_factory(
             recycler_frac += lam * float(t[5 + i]) / per_machine
     recycler_count = math.ceil(recycler_frac)
 
-    # 6. Rates.
-    raw_input_rates = tuple((ing.name, lam * ing.count) for ing in recipe.ingredients)
+    # 6. Rates. Solids are looped inputs (on the belt); fluids are external/piped.
+    raw_input_rates = tuple((ing.name, lam * ing.count) for ing in recipe.solid_ingredients)
+    fluid_input_rates = tuple((ing.name, lam * ing.count) for ing in recipe.fluid_ingredients)
     target_output_rate = lam * float(t[idx]) * n_target
 
     return FactoryPlan(
@@ -263,6 +284,7 @@ def plan_factory(
         module_configs=configs,
         input_rate=lam,
         raw_input_rates=raw_input_rates,
+        fluid_input_rates=fluid_input_rates,
         total_ingredients=N,
         target_name=target_name,
         target_ingredient=target_ingredient,

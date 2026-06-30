@@ -33,6 +33,8 @@ def _print_plan(cfg, plan) -> None:
     print(f"Input: {plan.input_rate:.3f} sets/s")
     for iname, rate in plan.raw_input_rates:
         print(f"    {iname:24} {rate:8.3f}/s")
+    for iname, rate in plan.fluid_input_rates:
+        print(f"    {iname:24} {rate:8.3f}/s  (fluid, piped, not recycled)")
     print(
         f"Binding belt: {plan.binding_belt} at {plan.binding_belt_flow:.1f}/s "
         f"(cap {cfg.belt_cap:g}); recycler-output={plan.phi_belt:.1f}/s, "

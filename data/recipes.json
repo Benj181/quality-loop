@@ -1,77 +1,41 @@
 {
  "_skipped": {
-  "acid-neutralisation": "fluid ingredient(s) not recoverable by recycling: ['sulfuric-acid']",
+  "acid-neutralisation": "no item-type result (fluid-only output)",
   "advanced-carbonic-asteroid-crushing": "multiple item results, no primary matching 'advanced-carbonic-asteroid-crushing'",
   "advanced-metallic-asteroid-crushing": "multiple item results, no primary matching 'advanced-metallic-asteroid-crushing'",
-  "advanced-oil-processing": "fluid ingredient(s) not recoverable by recycling: ['water', 'crude-oil']",
+  "advanced-oil-processing": "no recyclable (item) ingredients to loop",
   "advanced-oxide-asteroid-crushing": "multiple item results, no primary matching 'advanced-oxide-asteroid-crushing'",
-  "advanced-thruster-fuel": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "advanced-thruster-oxidizer": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "ammonia-rocket-fuel": "fluid ingredient(s) not recoverable by recycling: ['water', 'ammonia']",
-  "ammoniacal-solution-separation": "fluid ingredient(s) not recoverable by recycling: ['ammoniacal-solution']",
-  "basic-oil-processing": "fluid ingredient(s) not recoverable by recycling: ['crude-oil']",
-  "battery": "fluid ingredient(s) not recoverable by recycling: ['sulfuric-acid']",
-  "big-mining-drill": "fluid ingredient(s) not recoverable by recycling: ['molten-iron']",
+  "advanced-thruster-fuel": "no item-type result (fluid-only output)",
+  "advanced-thruster-oxidizer": "no item-type result (fluid-only output)",
+  "ammoniacal-solution-separation": "no recyclable (item) ingredients to loop",
+  "basic-oil-processing": "no recyclable (item) ingredients to loop",
   "biolubricant": "no item-type result (fluid-only output)",
   "biter-egg": "no ingredients (raw resource / mining)",
-  "captive-biter-spawner": "fluid ingredient(s) not recoverable by recycling: ['fluoroketone-cold']",
-  "carbon": "fluid ingredient(s) not recoverable by recycling: ['sulfuric-acid']",
   "carbonic-asteroid-crushing": "multiple item results, no primary matching 'carbonic-asteroid-crushing'",
   "carbonic-asteroid-reprocessing": "multiple item results, no primary matching 'carbonic-asteroid-reprocessing'",
-  "casting-copper": "fluid ingredient(s) not recoverable by recycling: ['molten-copper']",
-  "casting-copper-cable": "fluid ingredient(s) not recoverable by recycling: ['molten-copper']",
-  "casting-iron": "fluid ingredient(s) not recoverable by recycling: ['molten-iron']",
-  "casting-iron-gear-wheel": "fluid ingredient(s) not recoverable by recycling: ['molten-iron']",
-  "casting-iron-stick": "fluid ingredient(s) not recoverable by recycling: ['molten-iron']",
-  "casting-low-density-structure": "fluid ingredient(s) not recoverable by recycling: ['molten-iron', 'molten-copper']",
-  "casting-pipe": "fluid ingredient(s) not recoverable by recycling: ['molten-iron']",
-  "casting-pipe-to-ground": "fluid ingredient(s) not recoverable by recycling: ['molten-iron']",
-  "casting-steel": "fluid ingredient(s) not recoverable by recycling: ['molten-iron']",
-  "coal-liquefaction": "fluid ingredient(s) not recoverable by recycling: ['heavy-oil', 'steam']",
-  "coal-synthesis": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "concrete": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "concrete-from-molten-iron": "fluid ingredient(s) not recoverable by recycling: ['molten-iron', 'water']",
-  "crude-oil-barrel": "fluid ingredient(s) not recoverable by recycling: ['crude-oil']",
-  "cryogenic-science-pack": "fluid ingredient(s) not recoverable by recycling: ['fluoroketone-cold']",
-  "electric-engine-unit": "fluid ingredient(s) not recoverable by recycling: ['lubricant']",
-  "electrolyte": "fluid ingredient(s) not recoverable by recycling: ['heavy-oil', 'holmium-solution']",
-  "electromagnetic-science-pack": "fluid ingredient(s) not recoverable by recycling: ['electrolyte', 'holmium-solution']",
-  "explosives": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "express-splitter": "fluid ingredient(s) not recoverable by recycling: ['lubricant']",
-  "express-transport-belt": "fluid ingredient(s) not recoverable by recycling: ['lubricant']",
-  "express-underground-belt": "fluid ingredient(s) not recoverable by recycling: ['lubricant']",
-  "fish-breeding": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "flamethrower-ammo": "fluid ingredient(s) not recoverable by recycling: ['crude-oil']",
-  "fluoroketone": "fluid ingredient(s) not recoverable by recycling: ['fluorine', 'ammonia']",
-  "fluoroketone-cold-barrel": "fluid ingredient(s) not recoverable by recycling: ['fluoroketone-cold']",
-  "fluoroketone-cooling": "fluid ingredient(s) not recoverable by recycling: ['fluoroketone-hot']",
-  "fluoroketone-hot-barrel": "fluid ingredient(s) not recoverable by recycling: ['fluoroketone-hot']",
-  "foundation": "fluid ingredient(s) not recoverable by recycling: ['fluoroketone-cold']",
-  "foundry": "fluid ingredient(s) not recoverable by recycling: ['lubricant']",
-  "fusion-power-cell": "fluid ingredient(s) not recoverable by recycling: ['ammonia']",
-  "heavy-oil-barrel": "fluid ingredient(s) not recoverable by recycling: ['heavy-oil']",
-  "heavy-oil-cracking": "fluid ingredient(s) not recoverable by recycling: ['water', 'heavy-oil']",
-  "holmium-plate": "fluid ingredient(s) not recoverable by recycling: ['holmium-solution']",
-  "holmium-solution": "fluid ingredient(s) not recoverable by recycling: ['water']",
+  "casting-copper": "no recyclable (item) ingredients to loop",
+  "casting-copper-cable": "no recyclable (item) ingredients to loop",
+  "casting-iron": "no recyclable (item) ingredients to loop",
+  "casting-iron-gear-wheel": "no recyclable (item) ingredients to loop",
+  "casting-iron-stick": "no recyclable (item) ingredients to loop",
+  "casting-pipe": "no recyclable (item) ingredients to loop",
+  "casting-steel": "no recyclable (item) ingredients to loop",
+  "coal-liquefaction": "no item-type result (fluid-only output)",
+  "electrolyte": "no item-type result (fluid-only output)",
+  "fluoroketone": "no item-type result (fluid-only output)",
+  "fluoroketone-cooling": "no recyclable (item) ingredients to loop",
+  "heavy-oil-cracking": "no recyclable (item) ingredients to loop",
+  "holmium-plate": "no recyclable (item) ingredients to loop",
+  "holmium-solution": "no item-type result (fluid-only output)",
   "ice-melting": "no item-type result (fluid-only output)",
-  "ice-platform": "fluid ingredient(s) not recoverable by recycling: ['ammonia']",
   "jellynut-processing": "multiple item results, no primary matching 'jellynut-processing'",
   "kovarex-enrichment-process": "multiple item results, no primary matching 'kovarex-enrichment-process'",
-  "light-oil-barrel": "fluid ingredient(s) not recoverable by recycling: ['light-oil']",
-  "light-oil-cracking": "fluid ingredient(s) not recoverable by recycling: ['water', 'light-oil']",
-  "lightning-collector": "fluid ingredient(s) not recoverable by recycling: ['electrolyte']",
-  "lithium": "fluid ingredient(s) not recoverable by recycling: ['lithium-brine', 'ammonia']",
-  "lubricant": "fluid ingredient(s) not recoverable by recycling: ['heavy-oil']",
-  "lubricant-barrel": "fluid ingredient(s) not recoverable by recycling: ['lubricant']",
+  "light-oil-cracking": "no recyclable (item) ingredients to loop",
+  "lubricant": "no recyclable (item) ingredients to loop",
   "metallic-asteroid-crushing": "multiple item results, no primary matching 'metallic-asteroid-crushing'",
   "metallic-asteroid-reprocessing": "multiple item results, no primary matching 'metallic-asteroid-reprocessing'",
-  "metallurgic-science-pack": "fluid ingredient(s) not recoverable by recycling: ['molten-copper']",
   "molten-copper": "no item-type result (fluid-only output)",
-  "molten-copper-from-lava": "fluid ingredient(s) not recoverable by recycling: ['lava']",
   "molten-iron": "no item-type result (fluid-only output)",
-  "molten-iron-from-lava": "fluid ingredient(s) not recoverable by recycling: ['lava']",
-  "overgrowth-jellynut-soil": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "overgrowth-yumako-soil": "fluid ingredient(s) not recoverable by recycling: ['water']",
   "oxide-asteroid-crushing": "multiple item results, no primary matching 'oxide-asteroid-crushing'",
   "oxide-asteroid-reprocessing": "multiple item results, no primary matching 'oxide-asteroid-reprocessing'",
   "parameter-0": "no ingredients (raw resource / mining)",
@@ -84,41 +48,19 @@
   "parameter-7": "no ingredients (raw resource / mining)",
   "parameter-8": "no ingredients (raw resource / mining)",
   "parameter-9": "no ingredients (raw resource / mining)",
-  "pentapod-egg": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "petroleum-gas-barrel": "fluid ingredient(s) not recoverable by recycling: ['petroleum-gas']",
-  "plastic-bar": "fluid ingredient(s) not recoverable by recycling: ['petroleum-gas']",
-  "processing-unit": "fluid ingredient(s) not recoverable by recycling: ['sulfuric-acid']",
-  "quantum-processor": "fluid ingredient(s) not recoverable by recycling: ['fluoroketone-cold']",
-  "railgun": "fluid ingredient(s) not recoverable by recycling: ['fluoroketone-cold']",
-  "railgun-turret": "fluid ingredient(s) not recoverable by recycling: ['fluoroketone-cold']",
   "recipe-unknown": "no ingredients (raw resource / mining)",
-  "refined-concrete": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "rocket-fuel": "fluid ingredient(s) not recoverable by recycling: ['light-oil']",
-  "rocket-fuel-from-jelly": "fluid ingredient(s) not recoverable by recycling: ['water']",
   "scrap-recycling": "multiple item results, no primary matching 'scrap-recycling'",
-  "simple-coal-liquefaction": "fluid ingredient(s) not recoverable by recycling: ['sulfuric-acid']",
-  "solid-fuel-from-ammonia": "fluid ingredient(s) not recoverable by recycling: ['ammonia', 'crude-oil']",
-  "solid-fuel-from-heavy-oil": "fluid ingredient(s) not recoverable by recycling: ['heavy-oil']",
-  "solid-fuel-from-light-oil": "fluid ingredient(s) not recoverable by recycling: ['light-oil']",
-  "solid-fuel-from-petroleum-gas": "fluid ingredient(s) not recoverable by recycling: ['petroleum-gas']",
-  "steam-condensation": "fluid ingredient(s) not recoverable by recycling: ['steam']",
-  "sulfur": "fluid ingredient(s) not recoverable by recycling: ['water', 'petroleum-gas']",
-  "sulfuric-acid": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "sulfuric-acid-barrel": "fluid ingredient(s) not recoverable by recycling: ['sulfuric-acid']",
-  "supercapacitor": "fluid ingredient(s) not recoverable by recycling: ['electrolyte']",
-  "superconductor": "fluid ingredient(s) not recoverable by recycling: ['light-oil']",
-  "tesla-ammo": "fluid ingredient(s) not recoverable by recycling: ['electrolyte']",
-  "tesla-turret": "fluid ingredient(s) not recoverable by recycling: ['electrolyte']",
-  "teslagun": "fluid ingredient(s) not recoverable by recycling: ['electrolyte']",
-  "thruster-fuel": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "thruster-oxidizer": "fluid ingredient(s) not recoverable by recycling: ['water']",
-  "tungsten-carbide": "fluid ingredient(s) not recoverable by recycling: ['sulfuric-acid']",
-  "tungsten-plate": "fluid ingredient(s) not recoverable by recycling: ['molten-iron']",
-  "turbo-splitter": "fluid ingredient(s) not recoverable by recycling: ['lubricant']",
-  "turbo-transport-belt": "fluid ingredient(s) not recoverable by recycling: ['lubricant']",
-  "turbo-underground-belt": "fluid ingredient(s) not recoverable by recycling: ['lubricant']",
+  "simple-coal-liquefaction": "no item-type result (fluid-only output)",
+  "solid-fuel-from-ammonia": "no recyclable (item) ingredients to loop",
+  "solid-fuel-from-heavy-oil": "no recyclable (item) ingredients to loop",
+  "solid-fuel-from-light-oil": "no recyclable (item) ingredients to loop",
+  "solid-fuel-from-petroleum-gas": "no recyclable (item) ingredients to loop",
+  "steam-condensation": "no recyclable (item) ingredients to loop",
+  "sulfur": "no recyclable (item) ingredients to loop",
+  "sulfuric-acid": "no item-type result (fluid-only output)",
+  "thruster-fuel": "no item-type result (fluid-only output)",
+  "thruster-oxidizer": "no item-type result (fluid-only output)",
   "uranium-processing": "multiple item results, no primary matching 'uranium-processing'",
-  "water-barrel": "fluid ingredient(s) not recoverable by recycling: ['water']",
   "yumako-processing": "multiple item results, no primary matching 'yumako-processing'"
  },
  "accumulator": {
@@ -267,6 +209,37 @@
    {
     "amount": 1.0,
     "name": "agricultural-tower",
+    "type": "item"
+   }
+  ]
+ },
+ "ammonia-rocket-fuel": {
+  "category": "chemistry-or-cryogenics",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 10.0,
+    "name": "solid-fuel",
+    "type": "item"
+   },
+   {
+    "amount": 50.0,
+    "name": "water",
+    "type": "fluid"
+   },
+   {
+    "amount": 500.0,
+    "name": "ammonia",
+    "type": "fluid"
+   }
+  ],
+  "name": "ammonia-rocket-fuel",
+  "output_item": "rocket-fuel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "rocket-fuel",
     "type": "item"
    }
   ]
@@ -674,6 +647,37 @@
    }
   ]
  },
+ "battery": {
+  "category": "chemistry-or-cryogenics",
+  "energy_required": 4.0,
+  "ingredients": [
+   {
+    "amount": 20.0,
+    "name": "sulfuric-acid",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "iron-plate",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "copper-plate",
+    "type": "item"
+   }
+  ],
+  "name": "battery",
+  "output_item": "battery",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "battery",
+    "type": "item"
+   }
+  ]
+ },
  "battery-equipment": {
   "category": "crafting",
   "energy_required": 10.0,
@@ -846,6 +850,47 @@
    {
     "amount": 1.0,
     "name": "big-electric-pole",
+    "type": "item"
+   }
+  ]
+ },
+ "big-mining-drill": {
+  "category": "metallurgy",
+  "energy_required": 30.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "electric-mining-drill",
+    "type": "item"
+   },
+   {
+    "amount": 200.0,
+    "name": "molten-iron",
+    "type": "fluid"
+   },
+   {
+    "amount": 20.0,
+    "name": "tungsten-carbide",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "electric-engine-unit",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "advanced-circuit",
+    "type": "item"
+   }
+  ],
+  "name": "big-mining-drill",
+  "output_item": "big-mining-drill",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "big-mining-drill",
     "type": "item"
    }
   ]
@@ -1212,6 +1257,42 @@
    }
   ]
  },
+ "captive-biter-spawner": {
+  "category": "cryogenics",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 10.0,
+    "name": "biter-egg",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "capture-robot-rocket",
+    "type": "item"
+   },
+   {
+    "amount": 15.0,
+    "name": "uranium-235",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "fluoroketone-cold",
+    "type": "fluid"
+   }
+  ],
+  "name": "captive-biter-spawner",
+  "output_item": "captive-biter-spawner",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "captive-biter-spawner",
+    "type": "item"
+   }
+  ]
+ },
  "capture-robot-rocket": {
   "category": "crafting",
   "energy_required": 10.0,
@@ -1275,6 +1356,32 @@
    {
     "amount": 1.0,
     "name": "car",
+    "type": "item"
+   }
+  ]
+ },
+ "carbon": {
+  "category": "chemistry-or-cryogenics",
+  "energy_required": 1.0,
+  "ingredients": [
+   {
+    "amount": 2.0,
+    "name": "coal",
+    "type": "item"
+   },
+   {
+    "amount": 20.0,
+    "name": "sulfuric-acid",
+    "type": "fluid"
+   }
+  ],
+  "name": "carbon",
+  "output_item": "carbon",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "carbon",
     "type": "item"
    }
   ]
@@ -1394,6 +1501,63 @@
    {
     "amount": 1.0,
     "name": "cargo-wagon",
+    "type": "item"
+   }
+  ]
+ },
+ "casting-low-density-structure": {
+  "category": "metallurgy",
+  "energy_required": 15.0,
+  "ingredients": [
+   {
+    "amount": 80.0,
+    "name": "molten-iron",
+    "type": "fluid"
+   },
+   {
+    "amount": 250.0,
+    "name": "molten-copper",
+    "type": "fluid"
+   },
+   {
+    "amount": 5.0,
+    "name": "plastic-bar",
+    "type": "item"
+   }
+  ],
+  "name": "casting-low-density-structure",
+  "output_item": "low-density-structure",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "low-density-structure",
+    "type": "item"
+   }
+  ]
+ },
+ "casting-pipe-to-ground": {
+  "category": "metallurgy",
+  "energy_required": 1.0,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "molten-iron",
+    "type": "fluid"
+   },
+   {
+    "amount": 10.0,
+    "name": "pipe",
+    "type": "item"
+   }
+  ],
+  "name": "casting-pipe-to-ground",
+  "output_item": "pipe-to-ground",
+  "output_yield": 2.0,
+  "results": [
+   {
+    "amount": 2.0,
+    "name": "pipe-to-ground",
     "type": "item"
    }
   ]
@@ -1568,6 +1732,37 @@
    }
   ]
  },
+ "coal-synthesis": {
+  "category": "chemistry",
+  "energy_required": 2.0,
+  "ingredients": [
+   {
+    "amount": 5.0,
+    "name": "carbon",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "sulfur",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "water",
+    "type": "fluid"
+   }
+  ],
+  "name": "coal-synthesis",
+  "output_item": "coal",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "coal",
+    "type": "item"
+   }
+  ]
+ },
  "combat-shotgun": {
   "category": "crafting",
   "energy_required": 10.0,
@@ -1600,6 +1795,68 @@
    {
     "amount": 1.0,
     "name": "combat-shotgun",
+    "type": "item"
+   }
+  ]
+ },
+ "concrete": {
+  "category": "crafting-with-fluid",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 5.0,
+    "name": "stone-brick",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "iron-ore",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "water",
+    "type": "fluid"
+   }
+  ],
+  "name": "concrete",
+  "output_item": "concrete",
+  "output_yield": 10.0,
+  "results": [
+   {
+    "amount": 10.0,
+    "name": "concrete",
+    "type": "item"
+   }
+  ]
+ },
+ "concrete-from-molten-iron": {
+  "category": "metallurgy",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 20.0,
+    "name": "molten-iron",
+    "type": "fluid"
+   },
+   {
+    "amount": 100.0,
+    "name": "water",
+    "type": "fluid"
+   },
+   {
+    "amount": 5.0,
+    "name": "stone-brick",
+    "type": "item"
+   }
+  ],
+  "name": "concrete-from-molten-iron",
+  "output_item": "concrete",
+  "output_yield": 10.0,
+  "results": [
+   {
+    "amount": 10.0,
+    "name": "concrete",
     "type": "item"
    }
   ]
@@ -1750,6 +2007,32 @@
    }
   ]
  },
+ "crude-oil-barrel": {
+  "category": "crafting-with-fluid",
+  "energy_required": 0.2,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "crude-oil",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "barrel",
+    "type": "item"
+   }
+  ],
+  "name": "crude-oil-barrel",
+  "output_item": "crude-oil-barrel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "crude-oil-barrel",
+    "type": "item"
+   }
+  ]
+ },
  "crusher": {
   "category": "crafting",
   "energy_required": 10.0,
@@ -1814,6 +2097,42 @@
     "amount": 1.0,
     "name": "cryogenic-plant",
     "type": "item"
+   }
+  ]
+ },
+ "cryogenic-science-pack": {
+  "category": "cryogenics",
+  "energy_required": 20.0,
+  "ingredients": [
+   {
+    "amount": 3.0,
+    "name": "ice",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "lithium-plate",
+    "type": "item"
+   },
+   {
+    "amount": 6.0,
+    "name": "fluoroketone-cold",
+    "type": "fluid"
+   }
+  ],
+  "name": "cryogenic-science-pack",
+  "output_item": "cryogenic-science-pack",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "cryogenic-science-pack",
+    "type": "item"
+   },
+   {
+    "amount": 3.0,
+    "name": "fluoroketone-hot",
+    "type": "fluid"
    }
   ]
  },
@@ -2081,6 +2400,37 @@
    }
   ]
  },
+ "electric-engine-unit": {
+  "category": "crafting-with-fluid",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "engine-unit",
+    "type": "item"
+   },
+   {
+    "amount": 15.0,
+    "name": "lubricant",
+    "type": "fluid"
+   },
+   {
+    "amount": 2.0,
+    "name": "electronic-circuit",
+    "type": "item"
+   }
+  ],
+  "name": "electric-engine-unit",
+  "output_item": "electric-engine-unit",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "electric-engine-unit",
+    "type": "item"
+   }
+  ]
+ },
  "electric-furnace": {
   "category": "crafting",
   "energy_required": 5.0,
@@ -2175,6 +2525,42 @@
    {
     "amount": 1.0,
     "name": "electromagnetic-plant",
+    "type": "item"
+   }
+  ]
+ },
+ "electromagnetic-science-pack": {
+  "category": "electromagnetics",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "supercapacitor",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "accumulator",
+    "type": "item"
+   },
+   {
+    "amount": 25.0,
+    "name": "electrolyte",
+    "type": "fluid"
+   },
+   {
+    "amount": 25.0,
+    "name": "holmium-solution",
+    "type": "fluid"
+   }
+  ],
+  "name": "electromagnetic-science-pack",
+  "output_item": "electromagnetic-science-pack",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "electromagnetic-science-pack",
     "type": "item"
    }
   ]
@@ -2641,6 +3027,37 @@
    }
   ]
  },
+ "explosives": {
+  "category": "chemistry-or-cryogenics",
+  "energy_required": 4.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "sulfur",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "coal",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "water",
+    "type": "fluid"
+   }
+  ],
+  "name": "explosives",
+  "output_item": "explosives",
+  "output_yield": 2.0,
+  "results": [
+   {
+    "amount": 2.0,
+    "name": "explosives",
+    "type": "item"
+   }
+  ]
+ },
  "express-loader": {
   "category": "crafting",
   "energy_required": 10.0,
@@ -2663,6 +3080,104 @@
    {
     "amount": 1.0,
     "name": "express-loader",
+    "type": "item"
+   }
+  ]
+ },
+ "express-splitter": {
+  "category": "crafting-with-fluid-or-metallurgy",
+  "energy_required": 2.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "fast-splitter",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "iron-gear-wheel",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "advanced-circuit",
+    "type": "item"
+   },
+   {
+    "amount": 80.0,
+    "name": "lubricant",
+    "type": "fluid"
+   }
+  ],
+  "name": "express-splitter",
+  "output_item": "express-splitter",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "express-splitter",
+    "type": "item"
+   }
+  ]
+ },
+ "express-transport-belt": {
+  "category": "crafting-with-fluid-or-metallurgy",
+  "energy_required": 0.5,
+  "ingredients": [
+   {
+    "amount": 10.0,
+    "name": "iron-gear-wheel",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "fast-transport-belt",
+    "type": "item"
+   },
+   {
+    "amount": 20.0,
+    "name": "lubricant",
+    "type": "fluid"
+   }
+  ],
+  "name": "express-transport-belt",
+  "output_item": "express-transport-belt",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "express-transport-belt",
+    "type": "item"
+   }
+  ]
+ },
+ "express-underground-belt": {
+  "category": "crafting-with-fluid-or-metallurgy",
+  "energy_required": 2.0,
+  "ingredients": [
+   {
+    "amount": 80.0,
+    "name": "iron-gear-wheel",
+    "type": "item"
+   },
+   {
+    "amount": 2.0,
+    "name": "fast-underground-belt",
+    "type": "item"
+   },
+   {
+    "amount": 40.0,
+    "name": "lubricant",
+    "type": "fluid"
+   }
+  ],
+  "name": "express-underground-belt",
+  "output_item": "express-underground-belt",
+  "output_yield": 2.0,
+  "results": [
+   {
+    "amount": 2.0,
+    "name": "express-underground-belt",
     "type": "item"
    }
   ]
@@ -2828,6 +3343,37 @@
    }
   ]
  },
+ "fish-breeding": {
+  "category": "organic-or-chemistry",
+  "energy_required": 6.0,
+  "ingredients": [
+   {
+    "amount": 2.0,
+    "name": "raw-fish",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "nutrients",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "water",
+    "type": "fluid"
+   }
+  ],
+  "name": "fish-breeding",
+  "output_item": "raw-fish",
+  "output_yield": 3.0,
+  "results": [
+   {
+    "amount": 3.0,
+    "name": "raw-fish",
+    "type": "item"
+   }
+  ]
+ },
  "fission-reactor-equipment": {
   "category": "crafting",
   "energy_required": 10.0,
@@ -2881,6 +3427,32 @@
    {
     "amount": 1.0,
     "name": "flamethrower",
+    "type": "item"
+   }
+  ]
+ },
+ "flamethrower-ammo": {
+  "category": "chemistry",
+  "energy_required": 6.0,
+  "ingredients": [
+   {
+    "amount": 5.0,
+    "name": "steel-plate",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "crude-oil",
+    "type": "fluid"
+   }
+  ],
+  "name": "flamethrower-ammo",
+  "output_item": "flamethrower-ammo",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "flamethrower-ammo",
     "type": "item"
    }
   ]
@@ -2957,6 +3529,58 @@
    }
   ]
  },
+ "fluoroketone-cold-barrel": {
+  "category": "crafting-with-fluid",
+  "energy_required": 0.2,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "fluoroketone-cold",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "barrel",
+    "type": "item"
+   }
+  ],
+  "name": "fluoroketone-cold-barrel",
+  "output_item": "fluoroketone-cold-barrel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "fluoroketone-cold-barrel",
+    "type": "item"
+   }
+  ]
+ },
+ "fluoroketone-hot-barrel": {
+  "category": "crafting-with-fluid",
+  "energy_required": 0.2,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "fluoroketone-hot",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "barrel",
+    "type": "item"
+   }
+  ],
+  "name": "fluoroketone-hot-barrel",
+  "output_item": "fluoroketone-hot-barrel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "fluoroketone-hot-barrel",
+    "type": "item"
+   }
+  ]
+ },
  "flying-robot-frame": {
   "category": "crafting",
   "energy_required": 20.0,
@@ -2993,6 +3617,88 @@
    }
   ]
  },
+ "foundation": {
+  "category": "crafting-with-fluid",
+  "energy_required": 30.0,
+  "ingredients": [
+   {
+    "amount": 4.0,
+    "name": "tungsten-plate",
+    "type": "item"
+   },
+   {
+    "amount": 4.0,
+    "name": "lithium-plate",
+    "type": "item"
+   },
+   {
+    "amount": 4.0,
+    "name": "carbon-fiber",
+    "type": "item"
+   },
+   {
+    "amount": 20.0,
+    "name": "stone",
+    "type": "item"
+   },
+   {
+    "amount": 20.0,
+    "name": "fluoroketone-cold",
+    "type": "fluid"
+   }
+  ],
+  "name": "foundation",
+  "output_item": "foundation",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "foundation",
+    "type": "item"
+   }
+  ]
+ },
+ "foundry": {
+  "category": "metallurgy-or-assembling",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "tungsten-carbide",
+    "type": "item"
+   },
+   {
+    "amount": 50.0,
+    "name": "steel-plate",
+    "type": "item"
+   },
+   {
+    "amount": 30.0,
+    "name": "electronic-circuit",
+    "type": "item"
+   },
+   {
+    "amount": 20.0,
+    "name": "refined-concrete",
+    "type": "item"
+   },
+   {
+    "amount": 20.0,
+    "name": "lubricant",
+    "type": "fluid"
+   }
+  ],
+  "name": "foundry",
+  "output_item": "foundry",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "foundry",
+    "type": "item"
+   }
+  ]
+ },
  "fusion-generator": {
   "category": "cryogenics",
   "energy_required": 30.0,
@@ -3020,6 +3726,37 @@
    {
     "amount": 1.0,
     "name": "fusion-generator",
+    "type": "item"
+   }
+  ]
+ },
+ "fusion-power-cell": {
+  "category": "cryogenics",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 5.0,
+    "name": "lithium-plate",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "holmium-plate",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "ammonia",
+    "type": "fluid"
+   }
+  ],
+  "name": "fusion-power-cell",
+  "output_item": "fusion-power-cell",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "fusion-power-cell",
     "type": "item"
    }
   ]
@@ -3346,6 +4083,58 @@
    {
     "amount": 1.0,
     "name": "heavy-armor",
+    "type": "item"
+   }
+  ]
+ },
+ "heavy-oil-barrel": {
+  "category": "crafting-with-fluid",
+  "energy_required": 0.2,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "heavy-oil",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "barrel",
+    "type": "item"
+   }
+  ],
+  "name": "heavy-oil-barrel",
+  "output_item": "heavy-oil-barrel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "heavy-oil-barrel",
+    "type": "item"
+   }
+  ]
+ },
+ "ice-platform": {
+  "category": "crafting-with-fluid",
+  "energy_required": 30.0,
+  "ingredients": [
+   {
+    "amount": 400.0,
+    "name": "ammonia",
+    "type": "fluid"
+   },
+   {
+    "amount": 50.0,
+    "name": "ice",
+    "type": "item"
+   }
+  ],
+  "name": "ice-platform",
+  "output_item": "ice-platform",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "ice-platform",
     "type": "item"
    }
   ]
@@ -3699,6 +4488,68 @@
    }
   ]
  },
+ "light-oil-barrel": {
+  "category": "crafting-with-fluid",
+  "energy_required": 0.2,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "light-oil",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "barrel",
+    "type": "item"
+   }
+  ],
+  "name": "light-oil-barrel",
+  "output_item": "light-oil-barrel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "light-oil-barrel",
+    "type": "item"
+   }
+  ]
+ },
+ "lightning-collector": {
+  "category": "electromagnetics",
+  "energy_required": 5.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "lightning-rod",
+    "type": "item"
+   },
+   {
+    "amount": 8.0,
+    "name": "supercapacitor",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "accumulator",
+    "type": "item"
+   },
+   {
+    "amount": 80.0,
+    "name": "electrolyte",
+    "type": "fluid"
+   }
+  ],
+  "name": "lightning-collector",
+  "output_item": "lightning-collector",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "lightning-collector",
+    "type": "item"
+   }
+  ]
+ },
  "lightning-rod": {
   "category": "electronics",
   "energy_required": 5.0,
@@ -3726,6 +4577,37 @@
    {
     "amount": 1.0,
     "name": "lightning-rod",
+    "type": "item"
+   }
+  ]
+ },
+ "lithium": {
+  "category": "chemistry-or-cryogenics",
+  "energy_required": 20.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "holmium-plate",
+    "type": "item"
+   },
+   {
+    "amount": 50.0,
+    "name": "lithium-brine",
+    "type": "fluid"
+   },
+   {
+    "amount": 50.0,
+    "name": "ammonia",
+    "type": "fluid"
+   }
+  ],
+  "name": "lithium",
+  "output_item": "lithium",
+  "output_yield": 5.0,
+  "results": [
+   {
+    "amount": 5.0,
+    "name": "lithium",
     "type": "item"
    }
   ]
@@ -3937,6 +4819,32 @@
    }
   ]
  },
+ "lubricant-barrel": {
+  "category": "crafting-with-fluid",
+  "energy_required": 0.2,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "lubricant",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "barrel",
+    "type": "item"
+   }
+  ],
+  "name": "lubricant-barrel",
+  "output_item": "lubricant-barrel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "lubricant-barrel",
+    "type": "item"
+   }
+  ]
+ },
  "mech-armor": {
   "category": "crafting",
   "energy_required": 60.0,
@@ -4009,6 +4917,37 @@
    }
   ]
  },
+ "metallurgic-science-pack": {
+  "category": "metallurgy",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 3.0,
+    "name": "tungsten-carbide",
+    "type": "item"
+   },
+   {
+    "amount": 2.0,
+    "name": "tungsten-plate",
+    "type": "item"
+   },
+   {
+    "amount": 200.0,
+    "name": "molten-copper",
+    "type": "fluid"
+   }
+  ],
+  "name": "metallurgic-science-pack",
+  "output_item": "metallurgic-science-pack",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "metallurgic-science-pack",
+    "type": "item"
+   }
+  ]
+ },
  "military-science-pack": {
   "category": "crafting",
   "energy_required": 10.0,
@@ -4062,6 +5001,68 @@
    {
     "amount": 1.0,
     "name": "modular-armor",
+    "type": "item"
+   }
+  ]
+ },
+ "molten-copper-from-lava": {
+  "category": "metallurgy",
+  "energy_required": 16.0,
+  "ingredients": [
+   {
+    "amount": 500.0,
+    "name": "lava",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "calcite",
+    "type": "item"
+   }
+  ],
+  "name": "molten-copper-from-lava",
+  "output_item": "stone",
+  "output_yield": 15.0,
+  "results": [
+   {
+    "amount": 250.0,
+    "name": "molten-copper",
+    "type": "fluid"
+   },
+   {
+    "amount": 15.0,
+    "name": "stone",
+    "type": "item"
+   }
+  ]
+ },
+ "molten-iron-from-lava": {
+  "category": "metallurgy",
+  "energy_required": 16.0,
+  "ingredients": [
+   {
+    "amount": 500.0,
+    "name": "lava",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "calcite",
+    "type": "item"
+   }
+  ],
+  "name": "molten-iron-from-lava",
+  "output_item": "stone",
+  "output_yield": 10.0,
+  "results": [
+   {
+    "amount": 250.0,
+    "name": "molten-iron",
+    "type": "fluid"
+   },
+   {
+    "amount": 10.0,
+    "name": "stone",
     "type": "item"
    }
   ]
@@ -4347,6 +5348,88 @@
    }
   ]
  },
+ "overgrowth-jellynut-soil": {
+  "category": "crafting-with-fluid",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 2.0,
+    "name": "artificial-jellynut-soil",
+    "type": "item"
+   },
+   {
+    "amount": 5.0,
+    "name": "jellynut-seed",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "biter-egg",
+    "type": "item"
+   },
+   {
+    "amount": 50.0,
+    "name": "spoilage",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "water",
+    "type": "fluid"
+   }
+  ],
+  "name": "overgrowth-jellynut-soil",
+  "output_item": "overgrowth-jellynut-soil",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "overgrowth-jellynut-soil",
+    "type": "item"
+   }
+  ]
+ },
+ "overgrowth-yumako-soil": {
+  "category": "crafting-with-fluid",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 2.0,
+    "name": "artificial-yumako-soil",
+    "type": "item"
+   },
+   {
+    "amount": 5.0,
+    "name": "yumako-seed",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "biter-egg",
+    "type": "item"
+   },
+   {
+    "amount": 50.0,
+    "name": "spoilage",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "water",
+    "type": "fluid"
+   }
+  ],
+  "name": "overgrowth-yumako-soil",
+  "output_item": "overgrowth-yumako-soil",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "overgrowth-yumako-soil",
+    "type": "item"
+   }
+  ]
+ },
  "passive-provider-chest": {
   "category": "crafting",
   "energy_required": 0.5,
@@ -4374,6 +5457,37 @@
    {
     "amount": 1.0,
     "name": "passive-provider-chest",
+    "type": "item"
+   }
+  ]
+ },
+ "pentapod-egg": {
+  "category": "organic",
+  "energy_required": 15.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "pentapod-egg",
+    "type": "item"
+   },
+   {
+    "amount": 30.0,
+    "name": "nutrients",
+    "type": "item"
+   },
+   {
+    "amount": 60.0,
+    "name": "water",
+    "type": "fluid"
+   }
+  ],
+  "name": "pentapod-egg",
+  "output_item": "pentapod-egg",
+  "output_yield": 2.0,
+  "results": [
+   {
+    "amount": 2.0,
+    "name": "pentapod-egg",
     "type": "item"
    }
   ]
@@ -4472,6 +5586,32 @@
    {
     "amount": 1.0,
     "name": "personal-roboport-mk2-equipment",
+    "type": "item"
+   }
+  ]
+ },
+ "petroleum-gas-barrel": {
+  "category": "crafting-with-fluid",
+  "energy_required": 0.2,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "petroleum-gas",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "barrel",
+    "type": "item"
+   }
+  ],
+  "name": "petroleum-gas-barrel",
+  "output_item": "petroleum-gas-barrel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "petroleum-gas-barrel",
     "type": "item"
    }
   ]
@@ -4611,6 +5751,32 @@
    }
   ]
  },
+ "plastic-bar": {
+  "category": "chemistry-or-cryogenics",
+  "energy_required": 1.0,
+  "ingredients": [
+   {
+    "amount": 20.0,
+    "name": "petroleum-gas",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "coal",
+    "type": "item"
+   }
+  ],
+  "name": "plastic-bar",
+  "output_item": "plastic-bar",
+  "output_yield": 2.0,
+  "results": [
+   {
+    "amount": 2.0,
+    "name": "plastic-bar",
+    "type": "item"
+   }
+  ]
+ },
  "poison-capsule": {
   "category": "crafting",
   "energy_required": 8.0,
@@ -4741,6 +5907,37 @@
    {
     "amount": 1.0,
     "name": "power-switch",
+    "type": "item"
+   }
+  ]
+ },
+ "processing-unit": {
+  "category": "electronics-with-fluid",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 20.0,
+    "name": "electronic-circuit",
+    "type": "item"
+   },
+   {
+    "amount": 2.0,
+    "name": "advanced-circuit",
+    "type": "item"
+   },
+   {
+    "amount": 5.0,
+    "name": "sulfuric-acid",
+    "type": "fluid"
+   }
+  ],
+  "name": "processing-unit",
+  "output_item": "processing-unit",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "processing-unit",
     "type": "item"
    }
   ]
@@ -5096,6 +6293,57 @@
    }
   ]
  },
+ "quantum-processor": {
+  "category": "electromagnetics",
+  "energy_required": 30.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "tungsten-carbide",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "processing-unit",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "superconductor",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "carbon-fiber",
+    "type": "item"
+   },
+   {
+    "amount": 2.0,
+    "name": "lithium-plate",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "fluoroketone-cold",
+    "type": "fluid"
+   }
+  ],
+  "name": "quantum-processor",
+  "output_item": "quantum-processor",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "quantum-processor",
+    "type": "item"
+   },
+   {
+    "amount": 5.0,
+    "name": "fluoroketone-hot",
+    "type": "fluid"
+   }
+  ]
+ },
  "radar": {
   "category": "crafting",
   "energy_required": 0.5,
@@ -5267,6 +6515,42 @@
    }
   ]
  },
+ "railgun": {
+  "category": "cryogenics",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 10.0,
+    "name": "tungsten-plate",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "superconductor",
+    "type": "item"
+   },
+   {
+    "amount": 20.0,
+    "name": "quantum-processor",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "fluoroketone-cold",
+    "type": "fluid"
+   }
+  ],
+  "name": "railgun",
+  "output_item": "railgun",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "railgun",
+    "type": "item"
+   }
+  ]
+ },
  "railgun-ammo": {
   "category": "crafting",
   "energy_required": 25.0,
@@ -5294,6 +6578,47 @@
    {
     "amount": 1.0,
     "name": "railgun-ammo",
+    "type": "item"
+   }
+  ]
+ },
+ "railgun-turret": {
+  "category": "cryogenics",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 100.0,
+    "name": "quantum-processor",
+    "type": "item"
+   },
+   {
+    "amount": 30.0,
+    "name": "tungsten-plate",
+    "type": "item"
+   },
+   {
+    "amount": 50.0,
+    "name": "superconductor",
+    "type": "item"
+   },
+   {
+    "amount": 20.0,
+    "name": "carbon-fiber",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "fluoroketone-cold",
+    "type": "fluid"
+   }
+  ],
+  "name": "railgun-turret",
+  "output_item": "railgun-turret",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "railgun-turret",
     "type": "item"
    }
   ]
@@ -5330,6 +6655,42 @@
    {
     "amount": 1.0,
     "name": "recycler",
+    "type": "item"
+   }
+  ]
+ },
+ "refined-concrete": {
+  "category": "crafting-with-fluid",
+  "energy_required": 15.0,
+  "ingredients": [
+   {
+    "amount": 20.0,
+    "name": "concrete",
+    "type": "item"
+   },
+   {
+    "amount": 8.0,
+    "name": "iron-stick",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "steel-plate",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "water",
+    "type": "fluid"
+   }
+  ],
+  "name": "refined-concrete",
+  "output_item": "refined-concrete",
+  "output_yield": 10.0,
+  "results": [
+   {
+    "amount": 10.0,
+    "name": "refined-concrete",
     "type": "item"
    }
   ]
@@ -5465,6 +6826,63 @@
    {
     "amount": 1.0,
     "name": "rocket",
+    "type": "item"
+   }
+  ]
+ },
+ "rocket-fuel": {
+  "category": "organic-or-assembling",
+  "energy_required": 15.0,
+  "ingredients": [
+   {
+    "amount": 10.0,
+    "name": "solid-fuel",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "light-oil",
+    "type": "fluid"
+   }
+  ],
+  "name": "rocket-fuel",
+  "output_item": "rocket-fuel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "rocket-fuel",
+    "type": "item"
+   }
+  ]
+ },
+ "rocket-fuel-from-jelly": {
+  "category": "organic",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 30.0,
+    "name": "water",
+    "type": "fluid"
+   },
+   {
+    "amount": 30.0,
+    "name": "jelly",
+    "type": "item"
+   },
+   {
+    "amount": 2.0,
+    "name": "bioflux",
+    "type": "item"
+   }
+  ],
+  "name": "rocket-fuel-from-jelly",
+  "output_item": "rocket-fuel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "rocket-fuel",
     "type": "item"
    }
   ]
@@ -6452,6 +7870,109 @@
    }
   ]
  },
+ "sulfuric-acid-barrel": {
+  "category": "crafting-with-fluid",
+  "energy_required": 0.2,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "sulfuric-acid",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "barrel",
+    "type": "item"
+   }
+  ],
+  "name": "sulfuric-acid-barrel",
+  "output_item": "sulfuric-acid-barrel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "sulfuric-acid-barrel",
+    "type": "item"
+   }
+  ]
+ },
+ "supercapacitor": {
+  "category": "electromagnetics",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 2.0,
+    "name": "holmium-plate",
+    "type": "item"
+   },
+   {
+    "amount": 2.0,
+    "name": "superconductor",
+    "type": "item"
+   },
+   {
+    "amount": 4.0,
+    "name": "electronic-circuit",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "battery",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "electrolyte",
+    "type": "fluid"
+   }
+  ],
+  "name": "supercapacitor",
+  "output_item": "supercapacitor",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "supercapacitor",
+    "type": "item"
+   }
+  ]
+ },
+ "superconductor": {
+  "category": "electromagnetics",
+  "energy_required": 5.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "holmium-plate",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "copper-plate",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "plastic-bar",
+    "type": "item"
+   },
+   {
+    "amount": 5.0,
+    "name": "light-oil",
+    "type": "fluid"
+   }
+  ],
+  "name": "superconductor",
+  "output_item": "superconductor",
+  "output_yield": 2.0,
+  "results": [
+   {
+    "amount": 2.0,
+    "name": "superconductor",
+    "type": "item"
+   }
+  ]
+ },
  "tank": {
   "category": "crafting",
   "energy_required": 5.0,
@@ -6484,6 +8005,114 @@
    {
     "amount": 1.0,
     "name": "tank",
+    "type": "item"
+   }
+  ]
+ },
+ "tesla-ammo": {
+  "category": "electromagnetics",
+  "energy_required": 30.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "supercapacitor",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "plastic-bar",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "electrolyte",
+    "type": "fluid"
+   }
+  ],
+  "name": "tesla-ammo",
+  "output_item": "tesla-ammo",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "tesla-ammo",
+    "type": "item"
+   }
+  ]
+ },
+ "tesla-turret": {
+  "category": "electromagnetics",
+  "energy_required": 30.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "teslagun",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "supercapacitor",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "processing-unit",
+    "type": "item"
+   },
+   {
+    "amount": 50.0,
+    "name": "superconductor",
+    "type": "item"
+   },
+   {
+    "amount": 500.0,
+    "name": "electrolyte",
+    "type": "fluid"
+   }
+  ],
+  "name": "tesla-turret",
+  "output_item": "tesla-turret",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "tesla-turret",
+    "type": "item"
+   }
+  ]
+ },
+ "teslagun": {
+  "category": "electromagnetics",
+  "energy_required": 30.0,
+  "ingredients": [
+   {
+    "amount": 10.0,
+    "name": "holmium-plate",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "superconductor",
+    "type": "item"
+   },
+   {
+    "amount": 30.0,
+    "name": "plastic-bar",
+    "type": "item"
+   },
+   {
+    "amount": 100.0,
+    "name": "electrolyte",
+    "type": "fluid"
+   }
+  ],
+  "name": "teslagun",
+  "output_item": "teslagun",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "teslagun",
     "type": "item"
    }
   ]
@@ -6607,6 +8236,63 @@
    }
   ]
  },
+ "tungsten-carbide": {
+  "category": "crafting-with-fluid",
+  "energy_required": 1.0,
+  "ingredients": [
+   {
+    "amount": 2.0,
+    "name": "tungsten-ore",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "sulfuric-acid",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "carbon",
+    "type": "item"
+   }
+  ],
+  "name": "tungsten-carbide",
+  "output_item": "tungsten-carbide",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "tungsten-carbide",
+    "type": "item"
+   }
+  ]
+ },
+ "tungsten-plate": {
+  "category": "metallurgy",
+  "energy_required": 10.0,
+  "ingredients": [
+   {
+    "amount": 4.0,
+    "name": "tungsten-ore",
+    "type": "item"
+   },
+   {
+    "amount": 10.0,
+    "name": "molten-iron",
+    "type": "fluid"
+   }
+  ],
+  "name": "tungsten-plate",
+  "output_item": "tungsten-plate",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "tungsten-plate",
+    "type": "item"
+   }
+  ]
+ },
  "turbo-loader": {
   "category": "crafting",
   "energy_required": 20.0,
@@ -6629,6 +8315,104 @@
    {
     "amount": 1.0,
     "name": "turbo-loader",
+    "type": "item"
+   }
+  ]
+ },
+ "turbo-splitter": {
+  "category": "metallurgy",
+  "energy_required": 2.0,
+  "ingredients": [
+   {
+    "amount": 1.0,
+    "name": "express-splitter",
+    "type": "item"
+   },
+   {
+    "amount": 15.0,
+    "name": "tungsten-plate",
+    "type": "item"
+   },
+   {
+    "amount": 2.0,
+    "name": "processing-unit",
+    "type": "item"
+   },
+   {
+    "amount": 80.0,
+    "name": "lubricant",
+    "type": "fluid"
+   }
+  ],
+  "name": "turbo-splitter",
+  "output_item": "turbo-splitter",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "turbo-splitter",
+    "type": "item"
+   }
+  ]
+ },
+ "turbo-transport-belt": {
+  "category": "metallurgy",
+  "energy_required": 0.5,
+  "ingredients": [
+   {
+    "amount": 5.0,
+    "name": "tungsten-plate",
+    "type": "item"
+   },
+   {
+    "amount": 1.0,
+    "name": "express-transport-belt",
+    "type": "item"
+   },
+   {
+    "amount": 20.0,
+    "name": "lubricant",
+    "type": "fluid"
+   }
+  ],
+  "name": "turbo-transport-belt",
+  "output_item": "turbo-transport-belt",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "turbo-transport-belt",
+    "type": "item"
+   }
+  ]
+ },
+ "turbo-underground-belt": {
+  "category": "metallurgy",
+  "energy_required": 2.0,
+  "ingredients": [
+   {
+    "amount": 40.0,
+    "name": "tungsten-plate",
+    "type": "item"
+   },
+   {
+    "amount": 2.0,
+    "name": "express-underground-belt",
+    "type": "item"
+   },
+   {
+    "amount": 40.0,
+    "name": "lubricant",
+    "type": "fluid"
+   }
+  ],
+  "name": "turbo-underground-belt",
+  "output_item": "turbo-underground-belt",
+  "output_yield": 2.0,
+  "results": [
+   {
+    "amount": 2.0,
+    "name": "turbo-underground-belt",
     "type": "item"
    }
   ]
@@ -6769,6 +8553,32 @@
    {
     "amount": 3.0,
     "name": "utility-science-pack",
+    "type": "item"
+   }
+  ]
+ },
+ "water-barrel": {
+  "category": "crafting-with-fluid",
+  "energy_required": 0.2,
+  "ingredients": [
+   {
+    "amount": 50.0,
+    "name": "water",
+    "type": "fluid"
+   },
+   {
+    "amount": 1.0,
+    "name": "barrel",
+    "type": "item"
+   }
+  ],
+  "name": "water-barrel",
+  "output_item": "water-barrel",
+  "output_yield": 1.0,
+  "results": [
+   {
+    "amount": 1.0,
+    "name": "water-barrel",
     "type": "item"
    }
   ]
