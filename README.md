@@ -166,6 +166,11 @@ not reconstruct them from module math. Read the crafting speed off the machine i
 "Crafting speed" line), or compute it from the base speed × your modules/beacons. The recycler's
 base crafting speed is `0.5`.
 
+For the exact value, hover over the machine and run this in the console (or in the map editor via
+`/editor`): `/c game.player.print(game.player.selected.crafting_speed)` — it prints the effective
+crafting speed with all modules, beacons, and quality applied (note: `/c` disables achievements
+for that save).
+
 Speed only affects **machine counts** (how fast each machine crafts). It never affects efficiency
 or yields — that's productivity's job — and the two are kept strictly separate.
 
