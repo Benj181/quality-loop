@@ -1,0 +1,27 @@
+[project]
+name = "quality-loop"
+version = "0.1.0"
+description = "Factorio quality recycler-assembler loop solver (steady-state production rates via transition matrices)."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy (>=1.24,<3.0)"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest (>=7.0,<9.0)"
+]
+
+[project.scripts]
+quality-loop = "quality_loop.cli:main"
+
+[tool.poetry]
+packages = [{include = "quality_loop", from = "src"}]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
