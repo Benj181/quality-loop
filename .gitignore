@@ -31,3 +31,6 @@ htmlcov/
 Thumbs.db
 
 .claude
+
+# Raw Factorio data.raw dumps (converter input; normalized output is data/recipes.json)
+data/*.txt

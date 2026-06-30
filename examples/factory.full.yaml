@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=factory.schema.json
+# ============================================================================
+# Full factory-synthesis config — every option, with allowed values.
+#
+# Run:  python -m quality_loop.cli factory examples/factory.full.yaml
+#
+# The tool targets the LEGENDARY tier (the engine optimizer is built around the
+# top tier). It optimizes per-tier modules, then sizes discrete machine banks so
+# one shared belt is the bottleneck.
+# ============================================================================
+
+# The recipe. Either a NAME looked up in the recipe database (preferred)...
+recipe: electronic-circuit
+#
+# ...or an inline mapping (no DB needed):
+# recipe:
+#   ingredients:            # name -> count per craft (REQUIRED, non-empty)
+#     iron-plate: 1
+#     copper-cable: 3
+#   craft_time: 0.5         # base recipe time, seconds (REQUIRED)
+#   output_yield: 1.0       # units produced per craft (default 1.0)
+#   output_item: electronic-circuit  # optional label
+#   name: electronic-circuit         # optional label
+
+# Path to the recipe database JSON. Default: the bundled data/recipes.json.
+# recipe_db: data/recipes.json
+
+# What is extracted. One of:
+#   items        - the legendary product ITEM (the tier-4 assembler bank exists)
+#   ingredients  - one legendary INGREDIENT (no tier-4 assembler bank)
+# Default: items
+output_mode: items
+
+# Required ONLY when output_mode is 'ingredients': which ingredient to upcycle
+# and extract (must be one of the recipe's ingredients).
+# target_ingredient: copper-cable
+
+# Binding-belt cap in items/sec (the fullest shared belt is held at this rate).
+# 240 = stacked turbo belt. Default: 240
+belt_cap: 240
+
+# ---- Machine ---------------------------------------------------------------
+machine:
+  # Which machine from the engine registry (sets module slots + base prod). REQUIRED.
+  # One of: electric_furnace, chemical_plant, assembling_machine,
+  #         foundry, em_plant, cryogenic_plant
+  machine_key: em_plant
+
+  # Measured in-game crafting_speed of the assembler. REQUIRED.
+  # This already bakes in machine quality, speed modules and beacons — it is
+  # taken as given and never reconstructed. Sets per-machine craft rate only.
+  assembler_speed: 5.0
+
+  # Measured in-game crafting_speed of the recycler. REQUIRED.
+  recycler_speed: 0.5
+
+  # Quality tier of the modules. Name (normal..legendary) or int 0..4.
+  # Default: legendary
+  module_tier: legendary
+
+  # Productivity research as a single scalar percent, added to total machine
+  # productivity inside the engine (engine clamps the total at +300%). This
+  # affects yields only; it never multiplies the speed-based craft rate.
+  # Default: 0.0
+  productivity_research: 0
+
+  # Recycle time as a fraction of craft_time. Factorio default is 1/16.
+  # Default: 0.0625
+  recycling_factor: 0.0625
