@@ -1,0 +1,277 @@
+"""Factory synthesis on top of the sealed quality-loop engine.
+
+Where engine.py *analyses* a given loop, this layer *synthesizes* one: given a
+recipe and measured machine speeds, it returns the optimal per-tier module config
+(from the engine optimizer) plus discrete machine counts for a fixed topology,
+sized so one shared belt is the bottleneck.
+
+Fixed topology (hardcoded, not a parameter):
+  - Separate assembler banks per quality tier (physically distinct groups).
+  - One shared recycler block recycling the crafted item of all tiers together.
+  - All recyclers dump returned ingredients onto one shared, mixed output belt;
+    quality tiers are filtered off in sequence. The target tier is extracted to
+    storage; the normal-tier remainder is priority-merged with raw input and
+    returned to the tier-0 banks.
+  - The binding constraint is a shared belt at its fullest point, capped at
+    BELT_CAP items/sec. Because the belt is mixed, its flow is the SUM over all
+    ingredient types, so both shared belts scale by the total per-craft ingredient
+    count N. The recycler-output belt (phi_belt) and the merged tier-0 input belt
+    (tier0_belt) can each be the largest, so we cap whichever binds.
+
+Set units: recycling returns ingredients in recipe proportion (25%), so the loop
+is a single balanced commodity measured in crafts/sets. The engine runs with
+recipe_ratio = output_yield; its flow vector t is per input-set. Physical
+per-ingredient quantities are recovered by scaling set flows by per-craft counts.
+
+Target tier is legendary (tier 4). Item mode extracts the legendary product item
+(the tier-4 assembler bank exists); ingredient mode upcycles and extracts one
+named legendary ingredient (no tier-4 assembler bank).
+
+Speed and productivity are kept strictly separate: measured crafting speed sets
+the per-machine craft rate (machine counts) and never touches the engine;
+productivity research lives entirely inside the engine flow magnitudes (yields).
+They must never multiply.
+
+One-way dependency: factory -> engine, never the reverse.
+"""
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass, replace
+from typing import Sequence
+
+from .engine import (
+    MACHINES,
+    ModuleConfig,
+    ModuleStrategy,
+    SystemOutput,
+    Tier,
+    efficiency,
+    loop_result,
+)
+from .recipes import RECYCLE_TIME_FACTOR, Ingredient, Recipe
+
+BELT_CAP = 240.0  # items/sec on the binding belt (stacked turbo belt)
+RECYCLING_FACTOR = RECYCLE_TIME_FACTOR  # recycle time / craft time
+TARGET_TIER = Tier.LEGENDARY.value  # the engine optimizer targets the top tier
+
+
+@dataclass(frozen=True)
+class RecipeSpec:
+    """A recipe as the synthesis layer needs it. Build from a database Recipe via
+    from_recipe(), or construct inline."""
+    ingredients: tuple[Ingredient, ...]
+    craft_time: float
+    output_yield: float = 1.0
+    name: str = "recipe"
+    output_item: str = "product"
+
+    @classmethod
+    def from_recipe(cls, r: Recipe) -> "RecipeSpec":
+        return cls(
+            ingredients=r.ingredients,
+            craft_time=r.craft_time,
+            output_yield=r.output_yield,
+            name=r.name,
+            output_item=r.output_item,
+        )
+
+    @property
+    def recipe_ratio(self) -> float:
+        """Items per input-set (engine's recipe_ratio in set units)."""
+        return self.output_yield
+
+    @property
+    def total_ingredients(self) -> float:
+        return sum(i.count for i in self.ingredients)
+
+    def ingredient(self, name: str) -> Ingredient:
+        for i in self.ingredients:
+            if i.name == name:
+                return i
+        raise KeyError(
+            f"{name!r} is not an ingredient of {self.name!r}; "
+            f"have {[i.name for i in self.ingredients]}"
+        )
+
+
+@dataclass(frozen=True)
+class MachineSpec:
+    """Machine identity plus measured in-game speeds.
+
+    machine_key indexes the engine's MACHINES registry (module slots + base
+    productivity). assembler_speed / recycler_speed are measured crafting_speed
+    values read from the game (they already bake in machine quality, speed
+    modules and beacons), so they are taken as given and never reconstructed.
+    productivity_research is a single scalar (%) added to total machine
+    productivity inside the engine (engine clamps the total at +300%).
+    """
+    machine_key: str
+    assembler_speed: float
+    recycler_speed: float
+    module_tier: int = Tier.LEGENDARY.value
+    productivity_research: float = 0.0
+    recycling_factor: float = RECYCLING_FACTOR
+
+
+@dataclass(frozen=True)
+class TierRow:
+    """Per-tier assembler bank summary."""
+    tier: int
+    has_assembler_bank: bool
+    role: str
+    assembler_count: int
+    fractional_assemblers: float
+    utilization: float
+
+
+@dataclass(frozen=True)
+class FactoryPlan:
+    """Synthesized factory: optimal modules + discrete machine counts + rates."""
+    output_mode: SystemOutput
+    target_tier: int
+    efficiency_pct: float
+    module_configs: Sequence[ModuleConfig]
+    input_rate: float                    # raw input-sets/sec (lambda)
+    raw_input_rates: Sequence[tuple[str, float]]  # per ingredient, units/sec
+    total_ingredients: float             # N (per-craft ingredient count sum)
+    target_name: str                     # what is extracted
+    target_ingredient: str | None        # ingredient mode only
+    target_output_rate: float            # extracted target/sec
+    recycler_count: int
+    recycler_fractional: float
+    phi_belt: float                      # recycler-output belt flow, items/sec
+    tier0_belt: float                    # merged tier-0 input belt flow, items/sec
+    binding_belt: str                    # "recycler-output" or "tier0-input"
+    binding_belt_flow: float             # items/sec (== belt_cap)
+    tier_rows: Sequence[TierRow]
+
+
+def craft_rate(speed: float, craft_time: float) -> float:
+    """Crafts per second for one machine. Productivity NEVER enters this rate:
+    prod adds free output, it does not change how fast crafts complete."""
+    return speed / craft_time
+
+
+def plan_factory(
+    recipe: RecipeSpec,
+    machine: MachineSpec,
+    output_mode: SystemOutput,
+    *,
+    target_ingredient: str | None = None,
+    belt_cap: float = BELT_CAP,
+) -> FactoryPlan:
+    """Synthesize a factory plan for a legendary-target loop."""
+    if output_mode is SystemOutput.BOTH:
+        raise ValueError("plan_factory targets a single extraction (items or ingredients).")
+
+    m = MACHINES[machine.machine_key]
+    if output_mode is SystemOutput.ITEMS:
+        keep_items, keep_ing, idx = TARGET_TIER, None, 5 + TARGET_TIER
+        if target_ingredient is not None:
+            raise ValueError("target_ingredient is only valid for ingredient extraction.")
+        target_name = recipe.output_item
+        n_target = 1.0
+    else:
+        keep_items, keep_ing, idx = None, TARGET_TIER, TARGET_TIER
+        if target_ingredient is None:
+            raise ValueError(
+                "ingredient extraction requires target_ingredient (one of "
+                f"{[i.name for i in recipe.ingredients]})."
+            )
+        n_target = recipe.ingredient(target_ingredient).count
+        target_name = target_ingredient
+
+    # 1. Optimal per-tier modules (intensive: independent of counts and belt).
+    eff_pct, configs = efficiency(
+        m, output_mode, ModuleStrategy.OPTIMIZE,
+        quality_module_tier=machine.module_tier,
+        prod_module_tier=machine.module_tier,
+        recipe_ratio=recipe.recipe_ratio,
+        extra_productivity=machine.productivity_research,
+    )
+
+    # 2. Per-input-set flow for that exact config (replicates efficiency()'s
+    #    internal run with unit input). Productivity lives only here.
+    meff = replace(m, base_productivity=m.base_productivity + machine.productivity_research)
+    t = loop_result(
+        meff, configs,
+        recycler_quality_tier=machine.module_tier,
+        input_vector=1.0,
+        recipe_ratio=recipe.recipe_ratio,
+        keep_items_from=keep_items,
+        keep_ingredients_from=keep_ing,
+    )
+    # Tie-back invariant: extracted set-output per input set == engine efficiency.
+    assert math.isclose(t[idx] * 100.0, eff_pct, rel_tol=0.0, abs_tol=1e-9), (
+        f"flow/efficiency mismatch: {t[idx] * 100.0} vs {eff_pct}"
+    )
+
+    # 3. Belts. Set-unit flows: phi (recycler ingredient-set output over all tiers,
+    #    raw input excluded -- it merges downstream) and tier0 (raw + normal return).
+    #    The shared belts are mixed, so physical flow = set-flow * N.
+    N = recipe.total_ingredients
+    phi_set = float(t[0:5].sum() - 1.0) * N   # recycler-output belt, items per set
+    tier0_set = float(t[0]) * N               # tier-0 input belt, items per set
+    if phi_set >= tier0_set:
+        binding_belt, binding_set = "recycler-output", phi_set
+    else:
+        binding_belt, binding_set = "tier0-input", tier0_set
+    lam = belt_cap / binding_set  # input-sets/sec
+    # Store actual belt rates (items/sec) like every other rate in the plan.
+    phi_belt = phi_set * lam
+    tier0_belt = tier0_set * lam
+    binding_flow = binding_set * lam  # == belt_cap
+
+    # 4. Assembler banks (discrete), sized by crafts/sec -- ingredient-independent.
+    cr = craft_rate(machine.assembler_speed, recipe.craft_time)
+    tier_rows = []
+    for i in range(5):
+        bank = keep_ing is None or i < keep_ing
+        if i == TARGET_TIER:
+            role = "assemble + extract item" if output_mode is SystemOutput.ITEMS \
+                else "extract ingredient (no bank)"
+        else:
+            role = "assemble + recycle"
+        if bank:
+            frac = lam * float(t[i]) / cr
+            count = math.ceil(frac)
+            util = frac / count if count else 0.0
+        else:
+            frac, count, util = 0.0, 0, 0.0
+        tier_rows.append(TierRow(i, bank, role, count, frac, util))
+
+    # 5. Recycler block (discrete). Recycled item tiers are those whose recycler
+    #    row is not zeroed by keep_items. The recycler processes the single product
+    #    item, so sizing uses item flow.
+    recycle_time = recipe.craft_time * machine.recycling_factor
+    per_machine = machine.recycler_speed / recycle_time  # items/sec per recycler
+    recycler_frac = 0.0
+    for i in range(5):
+        if keep_items is None or i < keep_items:
+            recycler_frac += lam * float(t[5 + i]) / per_machine
+    recycler_count = math.ceil(recycler_frac)
+
+    # 6. Rates.
+    raw_input_rates = tuple((ing.name, lam * ing.count) for ing in recipe.ingredients)
+    target_output_rate = lam * float(t[idx]) * n_target
+
+    return FactoryPlan(
+        output_mode=output_mode,
+        target_tier=TARGET_TIER,
+        efficiency_pct=eff_pct,
+        module_configs=configs,
+        input_rate=lam,
+        raw_input_rates=raw_input_rates,
+        total_ingredients=N,
+        target_name=target_name,
+        target_ingredient=target_ingredient,
+        target_output_rate=target_output_rate,
+        recycler_count=recycler_count,
+        recycler_fractional=recycler_frac,
+        phi_belt=phi_belt,
+        tier0_belt=tier0_belt,
+        binding_belt=binding_belt,
+        binding_belt_flow=binding_flow,
+        tier_rows=tier_rows,
+    )

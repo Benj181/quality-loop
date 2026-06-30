@@ -18,7 +18,7 @@ multipliers x1.0/1.3/1.6/1.9/2.5).
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, replace
 from enum import Enum
 from itertools import product
 from typing import Sequence
