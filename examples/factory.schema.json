@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/quality-loop/factory.schema.json",
+  "title": "Quality-loop factory synthesis config",
+  "description": "Config for `python -m quality_loop.cli factory <file>`. Targets the legendary tier.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["recipe", "machine"],
+  "properties": {
+    "recipe": {
+      "description": "A recipe NAME looked up in the database, or an inline recipe mapping.",
+      "oneOf": [
+        { "type": "string", "description": "Recipe name in the database (e.g. electronic-circuit)." },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ingredients", "craft_time"],
+          "properties": {
+            "ingredients": {
+              "description": "Map of ingredient name -> count per craft.",
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": { "type": "number", "exclusiveMinimum": 0 }
+            },
+            "craft_time": { "type": "number", "exclusiveMinimum": 0, "description": "Base recipe time (s)." },
+            "output_yield": { "type": "number", "exclusiveMinimum": 0, "default": 1.0 },
+            "output_item": { "type": "string" },
+            "name": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "recipe_db": {
+      "description": "Path to the recipe database JSON. Defaults to the bundled data/recipes.json.",
+      "type": "string"
+    },
+    "output_mode": {
+      "description": "What is extracted: the legendary product item, or one legendary ingredient.",
+      "type": "string",
+      "enum": ["items", "ingredients"],
+      "default": "items"
+    },
+    "target_ingredient": {
+      "description": "Required when output_mode is 'ingredients': which ingredient to upcycle and extract.",
+      "type": "string"
+    },
+    "belt_cap": {
+      "description": "Binding-belt cap in items/sec (240 = stacked turbo belt).",
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "default": 240
+    },
+    "machine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["machine_key", "assembler_speed", "recycler_speed"],
+      "properties": {
+        "machine_key": {
+          "description": "Machine from the engine registry (sets module slots and base productivity).",
+          "type": "string",
+          "enum": [
+            "electric_furnace",
+            "chemical_plant",
+            "assembling_machine",
+            "foundry",
+            "em_plant",
+            "cryogenic_plant"
+          ]
+        },
+        "assembler_speed": {
+          "description": "Measured in-game crafting_speed of the assembler.",
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "recycler_speed": {
+          "description": "Measured in-game crafting_speed of the recycler.",
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "module_tier": {
+          "description": "Quality tier of the modules: a name or an int 0..4.",
+          "default": "legendary",
+          "anyOf": [
+            { "type": "string", "enum": ["normal", "uncommon", "rare", "epic", "legendary"] },
+            { "type": "integer", "minimum": 0, "maximum": 4 }
+          ]
+        },
+        "productivity_research": {
+          "description": "Productivity research percent added to total machine productivity (engine clamps total at +300).",
+          "type": "number",
+          "minimum": 0,
+          "default": 0.0
+        },
+        "recycling_factor": {
+          "description": "Recycle time as a fraction of craft_time (Factorio default 1/16).",
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 0.0625
+        }
+      }
+    }
+  }
+}
