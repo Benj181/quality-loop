@@ -10,7 +10,7 @@
 # ============================================================================
 
 # The recipe. Either a NAME looked up in the recipe database (preferred)...
-recipe: processing-unit
+recipe: electronic-circuit
 #
 # ...or an inline mapping (no DB needed):
 # recipe:
@@ -44,7 +44,7 @@ machine:
   # Which machine from the engine registry (sets module slots + base prod). REQUIRED.
   # One of: electric_furnace, chemical_plant, assembling_machine,
   #         foundry, em_plant, cryogenic_plant
-  machine_key: em_plant
+  machine_key: assembling_machine
 
   # Measured in-game crafting_speed of the assembler. REQUIRED.
   # With NO 'beacons' block below this already bakes in machine quality, speed
@@ -65,7 +65,7 @@ machine:
   # productivity inside the engine (engine clamps the total at +300%). This
   # affects yields only; it never multiplies the speed-based craft rate.
   # Default: 0.0
-  productivity_research: 300
+  productivity_research: 0
 
   # Recycle time as a fraction of craft_time. Factorio default is 1/16.
   # Default: 0.0625
