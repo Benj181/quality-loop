@@ -47,12 +47,15 @@ machine:
   machine_key: em_plant
 
   # Measured in-game crafting_speed of the assembler. REQUIRED.
-  # This already bakes in machine quality, speed modules and beacons — it is
-  # taken as given and never reconstructed. Sets per-machine craft rate only.
-  assembler_speed: 5.0
+  # With NO 'beacons' block below this already bakes in machine quality, speed
+  # modules and beacons — taken as given and never reconstructed. If you DO add
+  # an assembler beacon spec, this becomes the beacon-FREE base speed instead.
+  # Sets per-machine craft rate only.
+  assembler_speed: 5
 
   # Measured in-game crafting_speed of the recycler. REQUIRED.
-  recycler_speed: 0.5
+  # Same rule: beacon-free base speed when a recycler beacon spec is given below.
+  recycler_speed: 1
 
   # Quality tier of the modules. Name (normal..legendary) or int 0..4.
   # Default: legendary
@@ -67,3 +70,27 @@ machine:
   # Recycle time as a fraction of craft_time. Factorio default is 1/16.
   # Default: 0.0625
   recycling_factor: 0.0625
+
+  # ---- Speed beacons (OPTIONAL) --------------------------------------------
+  # Speed modules can only go in beacons, and they carry a NEGATIVE quality
+  # effect. When you add a beacon spec, the tool derives BOTH the speed bonus
+  # (fewer machines) AND the quality penalty (lower efficiency) from it — the
+  # two faces of the same beacons stay consistent. Omit this block entirely to
+  # keep the old behaviour (speed baked into *_speed, no penalty).
+  #
+  # Tips from the mechanics:
+  #   - beacon_quality is efficiency-NEUTRAL: it scales speed and penalty
+  #     together, so it only changes footprint/granularity (leave it normal).
+  #   - legendary speed modules DOMINATE: more speed at the same penalty.
+  #   - a partial fill (modules_per_beacon: 1) is often the optimum.
+  # Use `--sweep-recyclers[=MAX]` on the CLI to scan recycler-beacon layouts.
+  #
+  # beacons:
+  #   recycler:
+  #     count: 2                 # beacons affecting each recycler (REQUIRED)
+  #     modules_per_beacon: 1    # 0..2 (default 2)
+  #     speed_module_level: 3    # 1/2/3 (default 3)
+  #     speed_module_quality: legendary   # name or 0..4 (default legendary)
+  #     beacon_quality: normal            # name or 0..4 (default normal)
+  #   assembler:
+  #     count: 0                 # (same fields) beacons on the assembler banks

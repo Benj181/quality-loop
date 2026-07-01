@@ -12,15 +12,20 @@ import json
 import os
 from dataclasses import dataclass
 
-from .engine import MACHINES, SystemOutput, Tier
-from .factory import BELT_CAP, RECYCLING_FACTOR, MachineSpec, RecipeSpec
+from .engine import BEACON_SLOTS, MACHINES, SystemOutput, Tier
+from .factory import BELT_CAP, RECYCLING_FACTOR, BeaconSpec, MachineSpec, RecipeSpec
 from .recipes import Ingredient, RecipeDB
 
 _TOP_KEYS = {"output_mode", "belt_cap", "recipe", "recipe_db", "target_ingredient", "machine"}
 _RECIPE_KEYS = {"ingredients", "craft_time", "output_yield", "output_item", "name"}
 _MACHINE_KEYS = {
     "machine_key", "assembler_speed", "recycler_speed",
-    "module_tier", "productivity_research", "recycling_factor",
+    "module_tier", "productivity_research", "recycling_factor", "beacons",
+}
+_BEACONS_KEYS = {"assembler", "recycler"}
+_BEACON_KEYS = {
+    "count", "modules_per_beacon", "speed_module_level",
+    "speed_module_quality", "beacon_quality",
 }
 
 
@@ -64,6 +69,39 @@ def _parse_tier(value) -> int:
         raise ValueError(f"invalid module_tier: {value!r}") from None
 
 
+def _parse_one_beacon(data, where: str) -> BeaconSpec:
+    if not isinstance(data, dict):
+        raise ValueError(f"'{where}' beacons must be a mapping")
+    _reject_unknown(data, _BEACON_KEYS, f"{where} beacons")
+    count = int(_require(data, "count", f"{where} beacons"))
+    mods = int(data.get("modules_per_beacon", BEACON_SLOTS))
+    if not 0 <= mods <= BEACON_SLOTS:
+        raise ValueError(f"{where} beacons 'modules_per_beacon' must be 0..{BEACON_SLOTS}")
+    level = int(data.get("speed_module_level", 3))
+    if level not in (1, 2, 3):
+        raise ValueError(f"{where} beacons 'speed_module_level' must be 1, 2 or 3")
+    return BeaconSpec(
+        n_beacons=count,
+        modules_per_beacon=mods,
+        speed_module_level=level,
+        speed_module_quality_tier=_parse_tier(data.get("speed_module_quality", Tier.LEGENDARY.value)),
+        beacon_quality_tier=_parse_tier(data.get("beacon_quality", Tier.NORMAL.value)),
+    )
+
+
+def _parse_beacons(machine_d: dict) -> tuple[BeaconSpec | None, BeaconSpec | None]:
+    """Parse the optional machine 'beacons' block into (assembler, recycler) specs."""
+    beacons = machine_d.get("beacons")
+    if beacons is None:
+        return None, None
+    if not isinstance(beacons, dict):
+        raise ValueError("'beacons' must be a mapping with 'assembler' and/or 'recycler'")
+    _reject_unknown(beacons, _BEACONS_KEYS, "beacons")
+    asm = _parse_one_beacon(beacons["assembler"], "assembler") if "assembler" in beacons else None
+    rec = _parse_one_beacon(beacons["recycler"], "recycler") if "recycler" in beacons else None
+    return asm, rec
+
+
 def _parse_recipe(data: dict, db: RecipeDB | None) -> RecipeSpec:
     recipe_field = _require(data, "recipe", "top-level")
     if isinstance(recipe_field, str):
@@ -105,6 +143,7 @@ def parse_factory_config(data, db: RecipeDB | None = None) -> FactoryConfig:
     machine_key = _require(machine_d, "machine_key", "machine")
     if machine_key not in MACHINES:
         raise ValueError(f"unknown machine_key {machine_key!r}; choices: {sorted(MACHINES)}")
+    asm_beacons, rec_beacons = _parse_beacons(machine_d)
     machine = MachineSpec(
         machine_key=machine_key,
         assembler_speed=float(_require(machine_d, "assembler_speed", "machine")),
@@ -112,6 +151,8 @@ def parse_factory_config(data, db: RecipeDB | None = None) -> FactoryConfig:
         module_tier=_parse_tier(machine_d.get("module_tier", Tier.LEGENDARY.value)),
         productivity_research=float(machine_d.get("productivity_research", 0.0)),
         recycling_factor=float(machine_d.get("recycling_factor", RECYCLING_FACTOR)),
+        assembler_beacons=asm_beacons,
+        recycler_beacons=rec_beacons,
     )
 
     output_mode = SystemOutput(data.get("output_mode", "items"))

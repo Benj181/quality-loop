@@ -51,6 +51,29 @@ PROD_BASE_BY_LEVEL = {1: 4.0, 2: 6.0, 3: 10.0}
 RECYCLER_PRODUCTIVITY = -75.0  # recycler returns 25% -> effective -75% prod
 PROD_CAP = 300.0  # game caps total productivity bonus at +300% (i.e. 400% total)
 
+# ---- Speed-module / beacon constants ------------------------------------
+# Only speed (and efficiency) modules can go in beacons. A speed module raises
+# crafting speed but *lowers* the machine's quality chance -- and beacon-borne
+# speed modules therefore drag the recycler/assembler quality down.
+#
+# Per-module base effects at *normal* module quality: (speed_bonus%, quality_penalty%).
+# Verify against the game if constants ever drift:
+#   https://wiki.factorio.com/Speed_module
+SPEED_BONUS_BY_LEVEL = {1: 20.0, 2: 30.0, 3: 50.0}    # % speed per module (normal quality)
+SPEED_QUALITY_PENALTY_BY_LEVEL = {1: 1.0, 2: 1.5, 3: 2.5}  # % quality lost per module
+# Module quality scales the *benefit* (speed) by TIER_MULT but NOT the drawback
+# (the quality penalty). Wiki: "higher quality improves the benefits of the
+# modules but not their drawbacks." So the penalty is quality-independent.
+#
+# A beacon transmits the summed module effect at strength
+#   distribution_efficiency / sqrt(n)   per beacon,
+# which combines across n beacons to  distribution_efficiency * sqrt(n).
+# Distribution efficiency rises with beacon *quality* (normal 1.5 .. legendary 2.5);
+# it scales speed and penalty by the same factor, so it never changes their ratio.
+#   https://wiki.factorio.com/Beacon
+BEACON_DISTRIBUTION_EFFICIENCY = (1.5, 1.7, 1.9, 2.1, 2.5)  # by beacon quality tier 0..4
+BEACON_SLOTS = 2  # module slots in a beacon
+
 
 class Tier(int, Enum):
     NORMAL = 0
@@ -94,6 +117,38 @@ class ModuleConfig:
     def productivity_bonus(self) -> float:
         base = PROD_BASE_BY_LEVEL[self.prod_module_level]
         return self.n_productivity * base * TIER_MULT[self.prod_module_tier]
+
+
+def beacon_effect(
+    n_beacons: int,
+    modules_per_beacon: int,
+    speed_module_level: int = 3,
+    speed_module_quality_tier: int = Tier.LEGENDARY.value,
+    beacon_quality_tier: int = Tier.NORMAL.value,
+) -> tuple[float, float]:
+    """Combined effect of a beacon field on one affected machine.
+
+    Returns (speed_bonus_frac, quality_penalty_pp):
+      speed_bonus_frac -- fractional speed bonus, e.g. 3.0 == +300% speed;
+      quality_penalty_pp -- percentage points to subtract from quality chance.
+
+    Both are the summed module effects transmitted at strength
+    distribution_efficiency * sqrt(n_beacons). Module quality scales the speed
+    benefit (via TIER_MULT) but not the quality penalty (drawbacks don't scale
+    with quality), so their ratio is fixed by the module level alone -- beacon
+    quality and layout only move the two together.
+    """
+    if n_beacons <= 0 or modules_per_beacon <= 0:
+        return 0.0, 0.0
+    transmission = BEACON_DISTRIBUTION_EFFICIENCY[beacon_quality_tier] * (n_beacons ** 0.5)
+    modules = float(modules_per_beacon)
+    speed_per_module = (
+        SPEED_BONUS_BY_LEVEL[speed_module_level] * TIER_MULT[speed_module_quality_tier]
+    )
+    penalty_per_module = SPEED_QUALITY_PENALTY_BY_LEVEL[speed_module_level]
+    speed_bonus_frac = transmission * modules * speed_per_module / 100.0
+    quality_penalty_pp = transmission * modules * penalty_per_module
+    return speed_bonus_frac, quality_penalty_pp
 
 
 @dataclass(frozen=True)
@@ -162,6 +217,7 @@ def assembler_matrix(
     base_productivity: float,
     recipe_ratio: float,
     keep_from_tier: int | None,
+    quality_penalty: float = 0.0,
 ) -> np.ndarray:
     """5x5 assembler production matrix.
 
@@ -169,13 +225,15 @@ def assembler_matrix(
     base_productivity: machine intrinsic + research productivity (%).
     recipe_ratio: items produced per ingredient (recipe output/input ratio).
     keep_from_tier: tiers >= this are removed (row zeroed). None => keep nothing.
+    quality_penalty: percentage points subtracted from each tier's quality chance
+        (e.g. from speed beacons). production_matrix clamps the result at 0.
     """
     per_tier = []
     for i, cfg in enumerate(configs):
         prod = base_productivity + cfg.productivity_bonus()
         prod = min(prod, PROD_CAP)
         out_mult = (1.0 + prod / 100.0) * recipe_ratio
-        per_tier.append((cfg.quality_chance(), out_mult))
+        per_tier.append((cfg.quality_chance() - quality_penalty, out_mult))
     M = production_matrix(per_tier)
     if keep_from_tier is not None:
         for t in range(keep_from_tier, N_TIERS):
@@ -187,14 +245,19 @@ def recycler_matrix(
     configs: Sequence[ModuleConfig],
     recipe_ratio: float,
     keep_from_tier: int | None,
+    quality_penalty: float = 0.0,
 ) -> np.ndarray:
     """5x5 recycler production matrix. Recycler has -75% productivity (25% return)
-    and converts items back to ingredients, dividing out the recipe ratio."""
+    and converts items back to ingredients, dividing out the recipe ratio.
+
+    quality_penalty: percentage points subtracted from each tier's quality chance
+        (e.g. from speed beacons on the recycler). Clamped at 0 downstream.
+    """
     per_tier = []
     for cfg in configs:
         # recycler: 25% return, modified by its (negative) productivity floor.
         out_mult = (1.0 + RECYCLER_PRODUCTIVITY / 100.0) / recipe_ratio
-        per_tier.append((cfg.quality_chance(), out_mult))
+        per_tier.append((cfg.quality_chance() - quality_penalty, out_mult))
     M = production_matrix(per_tier)
     if keep_from_tier is not None:
         for t in range(keep_from_tier, N_TIERS):
@@ -260,11 +323,15 @@ def loop_result(
     recipe_ratio: float = 1.0,
     keep_items_from: int | None = Tier.LEGENDARY.value,
     keep_ingredients_from: int | None = Tier.LEGENDARY.value,
+    assembler_quality_penalty: float = 0.0,
+    recycler_quality_penalty: float = 0.0,
 ) -> np.ndarray:
     """Run a full loop and return the 10-vector of flows.
 
     recycler_quality_modules: how many quality modules the recycler runs
         (defaults to 4, the standard "always quality in recycler" choice).
+    assembler_quality_penalty / recycler_quality_penalty: percentage points of
+        quality chance lost to speed beacons on the assembler banks / recycler.
     """
     rq = 4 if recycler_quality_modules is None else recycler_quality_modules
     recycler_configs = [
@@ -275,9 +342,12 @@ def loop_result(
     # recycler's corresponding rows. Removing legendary INGREDIENTS means they
     # never enter the assembler -> zero the assembler's corresponding rows.
     A = assembler_matrix(
-        assembler_configs, machine.base_productivity, recipe_ratio, keep_ingredients_from
+        assembler_configs, machine.base_productivity, recipe_ratio,
+        keep_ingredients_from, assembler_quality_penalty,
     )
-    R = recycler_matrix(recycler_configs, recipe_ratio, keep_items_from)
+    R = recycler_matrix(
+        recycler_configs, recipe_ratio, keep_items_from, recycler_quality_penalty
+    )
     T = transition_matrix(R, A)
     if isinstance(input_vector, np.ndarray):
         iv = np.asarray(input_vector, dtype=float)
@@ -301,10 +371,15 @@ def efficiency(
     prod_module_tier: int = Tier.LEGENDARY.value,
     recipe_ratio: float = 1.0,
     extra_productivity: float = 0.0,
+    assembler_quality_penalty: float = 0.0,
+    recycler_quality_penalty: float = 0.0,
 ) -> tuple[float, list[ModuleConfig] | None]:
     """Return (efficiency_percent, best_assembler_configs).
 
     Efficiency = legendary output rate per unit of normal input, as a %.
+
+    assembler_quality_penalty / recycler_quality_penalty: percentage points of
+    quality chance lost to speed beacons; passed straight through to the loop.
     """
     if system_output == SystemOutput.ITEMS:
         keep_items, keep_ing = Tier.LEGENDARY.value, None
@@ -325,6 +400,8 @@ def efficiency(
             recycler_quality_tier=quality_module_tier,
             input_vector=100.0, recipe_ratio=recipe_ratio,
             keep_items_from=keep_items, keep_ingredients_from=keep_ing,
+            assembler_quality_penalty=assembler_quality_penalty,
+            recycler_quality_penalty=recycler_quality_penalty,
         )
         return out[idx] if idx is not None else out[4] + out[9]
 

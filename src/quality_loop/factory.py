@@ -41,11 +41,13 @@ from dataclasses import dataclass, replace
 from typing import Sequence
 
 from .engine import (
+    BEACON_SLOTS,
     MACHINES,
     ModuleConfig,
     ModuleStrategy,
     SystemOutput,
     Tier,
+    beacon_effect,
     efficiency,
     loop_result,
 )
@@ -109,13 +111,41 @@ class RecipeSpec:
 
 
 @dataclass(frozen=True)
+class BeaconSpec:
+    """A field of speed beacons affecting one machine group.
+
+    n_beacons beacons, each holding modules_per_beacon speed modules (0..BEACON_SLOTS;
+    a partial fill of 1 module is what lets a lone beacon be the optimum). The engine
+    derives BOTH the speed multiplier and the negative quality effect from this spec:
+    beacon quality only scales the two together (never their ratio), so it is a plain
+    input, not something to optimize.
+    """
+    n_beacons: int = 0
+    modules_per_beacon: int = BEACON_SLOTS
+    speed_module_level: int = 3
+    speed_module_quality_tier: int = Tier.LEGENDARY.value  # legendary modules dominate
+    beacon_quality_tier: int = Tier.NORMAL.value
+
+    def effect(self) -> tuple[float, float]:
+        """(speed_bonus_frac, quality_penalty_pp) for one affected machine."""
+        return beacon_effect(
+            self.n_beacons, self.modules_per_beacon, self.speed_module_level,
+            self.speed_module_quality_tier, self.beacon_quality_tier,
+        )
+
+
+@dataclass(frozen=True)
 class MachineSpec:
     """Machine identity plus measured in-game speeds.
 
     machine_key indexes the engine's MACHINES registry (module slots + base
     productivity). assembler_speed / recycler_speed are measured crafting_speed
-    values read from the game (they already bake in machine quality, speed
-    modules and beacons), so they are taken as given and never reconstructed.
+    values read from the game. With NO beacon spec they already bake in machine
+    quality, speed modules and beacons, so they are taken as given. When an
+    assembler_beacons / recycler_beacons spec IS given, the corresponding speed is
+    treated as the beacon-free base and the beacon speed multiplier is applied on
+    top, while the beacon's quality penalty is threaded into the loop -- the two
+    faces of the same beacons stay consistent.
     productivity_research is a single scalar (%) added to total machine
     productivity inside the engine (engine clamps the total at +300%).
     """
@@ -125,6 +155,8 @@ class MachineSpec:
     module_tier: int = Tier.LEGENDARY.value
     productivity_research: float = 0.0
     recycling_factor: float = RECYCLING_FACTOR
+    assembler_beacons: BeaconSpec | None = None
+    recycler_beacons: BeaconSpec | None = None
 
 
 @dataclass(frozen=True)
@@ -159,6 +191,11 @@ class FactoryPlan:
     binding_belt: str                    # "recycler-output" or "tier0-input"
     binding_belt_flow: float             # items/sec (== belt_cap)
     tier_rows: Sequence[TierRow]
+    # Beacon effects actually applied (0.0 when no beacon spec is given).
+    assembler_speed_bonus: float = 0.0   # fractional (0.5 == +50%)
+    recycler_speed_bonus: float = 0.0
+    assembler_quality_penalty: float = 0.0   # percentage points
+    recycler_quality_penalty: float = 0.0
 
 
 def craft_rate(speed: float, craft_time: float) -> float:
@@ -202,6 +239,16 @@ def plan_factory(
         n_target = target.count
         target_name = target_ingredient
 
+    # 0. Beacon effects. Each beacon field yields a speed bonus (used only for
+    #    machine counts) and a quality penalty (threaded into the loop). With no
+    #    beacon spec both are 0 and everything below is unchanged.
+    asm_speed_bonus, asm_qpen = (
+        machine.assembler_beacons.effect() if machine.assembler_beacons else (0.0, 0.0)
+    )
+    rec_speed_bonus, rec_qpen = (
+        machine.recycler_beacons.effect() if machine.recycler_beacons else (0.0, 0.0)
+    )
+
     # 1. Optimal per-tier modules (intensive: independent of counts and belt).
     eff_pct, configs = efficiency(
         m, output_mode, ModuleStrategy.OPTIMIZE,
@@ -209,6 +256,8 @@ def plan_factory(
         prod_module_tier=machine.module_tier,
         recipe_ratio=recipe.recipe_ratio,
         extra_productivity=machine.productivity_research,
+        assembler_quality_penalty=asm_qpen,
+        recycler_quality_penalty=rec_qpen,
     )
 
     # 2. Per-input-set flow for that exact config (replicates efficiency()'s
@@ -221,6 +270,8 @@ def plan_factory(
         recipe_ratio=recipe.recipe_ratio,
         keep_items_from=keep_items,
         keep_ingredients_from=keep_ing,
+        assembler_quality_penalty=asm_qpen,
+        recycler_quality_penalty=rec_qpen,
     )
     # Tie-back invariant: extracted set-output per input set == engine efficiency.
     assert math.isclose(t[idx] * 100.0, eff_pct, rel_tol=0.0, abs_tol=1e-9), (
@@ -244,7 +295,8 @@ def plan_factory(
     binding_flow = binding_set * lam  # == belt_cap
 
     # 4. Assembler banks (discrete), sized by crafts/sec -- ingredient-independent.
-    cr = craft_rate(machine.assembler_speed, recipe.craft_time)
+    #    Beacon speed multiplies the base speed for counts only (never yields).
+    cr = craft_rate(machine.assembler_speed * (1.0 + asm_speed_bonus), recipe.craft_time)
     tier_rows = []
     for i in range(5):
         bank = keep_ing is None or i < keep_ing
@@ -265,7 +317,8 @@ def plan_factory(
     #    row is not zeroed by keep_items. The recycler processes the single product
     #    item, so sizing uses item flow.
     recycle_time = recipe.craft_time * machine.recycling_factor
-    per_machine = machine.recycler_speed / recycle_time  # items/sec per recycler
+    # Beacon speed multiplies the base recycler speed for counts only.
+    per_machine = machine.recycler_speed * (1.0 + rec_speed_bonus) / recycle_time
     recycler_frac = 0.0
     for i in range(5):
         if keep_items is None or i < keep_items:
@@ -296,4 +349,104 @@ def plan_factory(
         binding_belt=binding_belt,
         binding_belt_flow=binding_flow,
         tier_rows=tier_rows,
+        assembler_speed_bonus=asm_speed_bonus,
+        recycler_speed_bonus=rec_speed_bonus,
+        assembler_quality_penalty=asm_qpen,
+        recycler_quality_penalty=rec_qpen,
     )
+
+
+@dataclass(frozen=True)
+class SweepRow:
+    """One enumerated beacon option in a beacon comparison sweep.
+
+    Each option is a single beacon (n_beacons = 1) of the given quality holding
+    `modules` legendary Speed-3 modules, placed on `placement` machines.
+    placement is one of "none" (baseline), "recycler", "assembler", "both".
+    """
+    placement: str
+    beacon_quality_tier: int             # 0 (normal) or 4 (legendary)
+    modules: int                         # 1 or 2 (legendary Spd-3 modules); 0 for baseline
+    recycler_speed_bonus: float          # fractional
+    assembler_speed_bonus: float
+    recycler_quality_penalty: float      # percentage points
+    assembler_quality_penalty: float
+    efficiency_pct: float
+    recycler_count: int
+    total_assemblers: int
+    target_output_rate: float
+    machines_per_output: float           # (recyclers + assemblers) / output -- the objective
+    is_optimum: bool = False             # min machines_per_output over the sweep
+    is_fewest_recyclers: bool = False    # min recycler_count over the sweep
+
+
+def sweep_beacons(
+    recipe: RecipeSpec,
+    machine: MachineSpec,
+    output_mode: SystemOutput,
+    *,
+    speed_module_level: int = 3,
+    target_ingredient: str | None = None,
+    belt_cap: float = BELT_CAP,
+) -> list[SweepRow]:
+    """Compare a small, fixed set of speed-beacon options against the no-beacon case.
+
+    Each option is ONE beacon holding 1 or 2 legendary Speed-3 modules, of normal or
+    legendary beacon quality, placed on the recycler, the assembler banks, or both --
+    12 options plus the no-beacon baseline. (A single beacon keeps the comparison
+    concrete; beacon quality is included even though it is efficiency-neutral, so its
+    footprint/granularity effect is visible.)
+
+    Objective: minimize machines_per_output = (recyclers + assemblers) / output.
+    Beacons are not charged in the numerator (cheap/shareable). Returns all rows with
+    the objective-optimal and fewest-recycler rows flagged, baseline first.
+    """
+    def _make_row(placement, q_tier, mods):
+        beacon = (
+            None if placement == "none" else
+            BeaconSpec(
+                n_beacons=1, modules_per_beacon=mods,
+                speed_module_level=speed_module_level,
+                speed_module_quality_tier=Tier.LEGENDARY.value,  # legendary modules dominate
+                beacon_quality_tier=q_tier,
+            )
+        )
+        spec = replace(
+            machine,
+            assembler_beacons=beacon if placement in ("assembler", "both") else None,
+            recycler_beacons=beacon if placement in ("recycler", "both") else None,
+        )
+        plan = plan_factory(
+            recipe, spec, output_mode,
+            target_ingredient=target_ingredient, belt_cap=belt_cap,
+        )
+        total_assemblers = sum(r.assembler_count for r in plan.tier_rows)
+        total = plan.recycler_count + total_assemblers
+        mpo = total / plan.target_output_rate if plan.target_output_rate > 0 else float("inf")
+        return SweepRow(
+            placement=placement,
+            beacon_quality_tier=q_tier,
+            modules=0 if placement == "none" else mods,
+            recycler_speed_bonus=plan.recycler_speed_bonus,
+            assembler_speed_bonus=plan.assembler_speed_bonus,
+            recycler_quality_penalty=plan.recycler_quality_penalty,
+            assembler_quality_penalty=plan.assembler_quality_penalty,
+            efficiency_pct=plan.efficiency_pct,
+            recycler_count=plan.recycler_count,
+            total_assemblers=total_assemblers,
+            target_output_rate=plan.target_output_rate,
+            machines_per_output=mpo,
+        )
+
+    rows: list[SweepRow] = [_make_row("none", Tier.NORMAL.value, 0)]
+    for placement in ("recycler", "assembler", "both"):
+        for q_tier in (Tier.NORMAL.value, Tier.LEGENDARY.value):
+            for mods in (1, 2):
+                rows.append(_make_row(placement, q_tier, mods))
+
+    opt = min(rows, key=lambda r: r.machines_per_output)
+    fewest = min(rows, key=lambda r: r.recycler_count)
+    return [
+        replace(r, is_optimum=(r is opt), is_fewest_recyclers=(r is fewest))
+        for r in rows
+    ]

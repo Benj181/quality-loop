@@ -27,6 +27,7 @@ that limits you, and the input/output rates.
   - [Finding your machine speeds](#finding-your-machine-speeds)
   - [Extracting an ingredient instead of an item](#extracting-an-ingredient-instead-of-an-item)
 - [Config reference](#config-reference)
+- [Speed beacons & the quality penalty](#speed-beacons--the-quality-penalty)
 - [The factory model](#the-factory-model)
 - [For developers: use it as a library](#for-developers-use-it-as-a-library)
   - [Engine API](#engine-api)
@@ -211,6 +212,50 @@ off to storage instead of being crafted further. The tool labels that row `extra
 | `machine.module_tier` | name \| 0–4 | `legendary` | Quality tier of the modules. |
 | `machine.productivity_research` | number | `0` | Productivity research %, added to total machine productivity (the engine clamps the total at +300%). |
 | `machine.recycling_factor` | number | `0.0625` | Recycle time as a fraction of craft time (Factorio default 1/16). |
+| `machine.beacons.recycler` / `.assembler` | mapping | — | Optional speed-beacon spec (see below): `count`, `modules_per_beacon` (0–2), `speed_module_level` (1–3), `speed_module_quality`, `beacon_quality`. |
+
+---
+
+## Speed beacons & the quality penalty
+
+Beacons accept **only speed (or efficiency) modules**, and a speed module carries a **negative
+quality effect** (Spd-1 −1%, Spd-3 −2.5% per module). So speed-beaconing a recycler or assembler
+does two inseparable things: it raises throughput (fewer machines) **and** lowers the machine's
+quality chance (lower loop efficiency). Without a `beacons` block the tool assumes your measured
+speeds already bake in beacons but applies **no** penalty — which silently overstates efficiency for
+a quality-carrying machine. Add a `beacons` block and the tool derives *both* effects from one spec
+and keeps them consistent; the measured `*_speed` is then treated as the **beacon-free base**.
+
+The effect of `n` beacons, each with `m` speed modules of per-module effect `(speed s, penalty p)`,
+transmitted at a beacon's distribution efficiency `d` (normal 1.5 … legendary 2.5):
+
+```
+speed_bonus   = d · √n · m · s      (e.g. +300% speed)
+quality_loss  = d · √n · m · p      (percentage points, subtracted from quality chance, clamped ≥ 0)
+```
+
+Three consequences worth knowing:
+
+- **Beacon quality is efficiency-neutral.** `d` scales speed and penalty by the same factor, so
+  `quality_loss / speed_bonus = p/s` is independent of beacon quality — a legendary beacon only
+  changes building count and step size, never the tradeoff. Leave it `normal`.
+- **Legendary speed modules dominate.** Quality raises the benefit but not the drawback, so a
+  legendary Spd-3 gives +125% speed at the *same* −2.5% penalty as a normal Spd-3 (+50%). Fewer
+  modules for a given speed ⇒ less penalty.
+- **A partial fill can be optimal.** Machines saved per module diminish while the penalty per module
+  is constant, so the best layout is often a single module in a single beacon.
+
+Use `--sweep-beacons` to compare a small, fixed set of beacon options against the no-beacon
+baseline: **one beacon** of legendary Spd-3 modules, in every combination of beacon quality
+(normal / legendary) × modules (1 / 2) × placement (recycler / assemblers / both). For each it prints
+the resulting speed bonuses, quality penalties, efficiency, recycler/assembler counts, output, and
+`machines_per_output = (recyclers + assemblers) / output` — the objective it minimizes (beacons are
+not charged, per the cheap/shareable assumption). The objective-optimal and fewest-recycler rows are
+flagged.
+
+```bash
+quality-loop my-build.yaml --sweep-beacons
+```
 
 ---
 

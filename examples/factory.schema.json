@@ -96,6 +96,58 @@
           "type": "number",
           "exclusiveMinimum": 0,
           "default": 0.0625
+        },
+        "beacons": {
+          "description": "Optional speed beacons. When set, the corresponding *_speed is the beacon-free base; the tool derives both the speed bonus AND the quality penalty. Beacon quality is efficiency-neutral; legendary speed modules dominate.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "assembler": { "$ref": "#/definitions/beacon" },
+            "recycler": { "$ref": "#/definitions/beacon" }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "beacon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count"],
+      "properties": {
+        "count": {
+          "description": "Number of beacons affecting each machine.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "modules_per_beacon": {
+          "description": "Speed modules per beacon (0..2). A partial fill of 1 can be optimal.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 2
+        },
+        "speed_module_level": {
+          "description": "Speed module tier 1/2/3 (Spd-1/2/3).",
+          "type": "integer",
+          "enum": [1, 2, 3],
+          "default": 3
+        },
+        "speed_module_quality": {
+          "description": "Quality of the speed modules: a name or int 0..4. Legendary dominates (more speed, same penalty).",
+          "default": "legendary",
+          "anyOf": [
+            { "type": "string", "enum": ["normal", "uncommon", "rare", "epic", "legendary"] },
+            { "type": "integer", "minimum": 0, "maximum": 4 }
+          ]
+        },
+        "beacon_quality": {
+          "description": "Quality of the beacons: a name or int 0..4. Efficiency-neutral (only footprint/granularity).",
+          "default": "normal",
+          "anyOf": [
+            { "type": "string", "enum": ["normal", "uncommon", "rare", "epic", "legendary"] },
+            { "type": "integer", "minimum": 0, "maximum": 4 }
+          ]
         }
       }
     }
